@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,15 +26,15 @@ namespace KML2SQL
     public partial class MainWindow : Window
     {
         MapUploader myUploader;
-        StringBuilder log;
-        string logFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\KML2SQL";
-        string logFile = string.Empty;
+
+        readonly string _appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) 
+            + ConfigurationManager.AppSettings["AppFolder"];
 
         public MainWindow()
         {
             InitializeComponent();
-            if (!Directory.Exists(logFolder))
-                Directory.CreateDirectory(logFolder);
+            if (!Directory.Exists(_appFolder))
+                Directory.CreateDirectory(_appFolder);
             RestoreSettings();
         }
 
@@ -90,9 +91,7 @@ namespace KML2SQL
 
         private void CreateDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
-            log = new StringBuilder();
             SaveSettings();
-            logFile = String.Format("{0}\\KML2SQL_Log_{1:yyyy-MM-dd-hhmmss-fff}.txt", logFolder, DateTime.Now);
             bool geography;
             if (geographyMode.IsChecked != null)
                 geography = (bool)geographyMode.IsChecked;
@@ -103,27 +102,18 @@ namespace KML2SQL
             {
                 try
                 {
-                    myUploader = new MapUploader(BuildConnectionString(), columnNameBox.Text, KMLFileLocationBox.Text,
-                        tableBox.Text, srid, geography, log, logFile);
+                    myUploader = new MapUploader(BuildConnectionString());
                     Binding b = new Binding();
                     b.Source = myUploader;
                     b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     b.Path = new PropertyPath("Progress");
                     resultTextBox.SetBinding(TextBlock.TextProperty, b);
-                    myUploader.Upload();
+                    myUploader.Upload(columnNameBox.Text, KMLFileLocationBox.Text, tableBox.Text, srid, geography);
                 }
                 catch (Exception ex)
                 {
-                    resultTextBox.Text = "Error: " + ex.ToString();
-                    log.Append(ex.ToString() + Environment.NewLine);
-                }
-                finally
-                {
-                    using (var writer = new StreamWriter(logFile, true))
-                    {
-                        if (log != null)
-                            writer.Write(log);
-                    }
+                    MessageBox.Show("The process failed with the following error. See the log for details: \r\n\r\n " 
+                        + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -168,15 +158,16 @@ namespace KML2SQL
         private int ParseSRID(bool geographyMode)
         {
             if (!geographyMode)
+            {
                 return 4326;
+            }
             else
             {
-                MessageBoxResult sridMessage;
                 int srid;
                 if (int.TryParse(sridBox.Text, out srid))
                     return srid;
                 else
-                    sridMessage = MessageBox.Show("SRID must be a valid four digit number");
+                    MessageBox.Show("SRID must be a valid four digit number");
                 return srid;
             }
         }
@@ -241,16 +232,9 @@ namespace KML2SQL
         }
 
 
-        [Obsolete] //depricated by log files. No longer called.
-        private void resultTextBox_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-                MessageBox.Show(resultTextBox.Text);
-        }
-
         private void Log_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(logFolder);
+            Process.Start(_appFolder);
         }
     }
 }

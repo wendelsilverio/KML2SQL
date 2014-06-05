@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Documents;
 using SharpKml.Dom;
 using SharpKml.Engine;
 using System.ComponentModel;
@@ -12,10 +15,11 @@ namespace KML2SQL
 {
     public class MapUploader : INotifyPropertyChanged
     {
-        readonly string _connectionString, _placemarkColumnName, _tableName, _sqlGeoType, _logFile;
-        readonly StringBuilder _log;
-        readonly bool _geographyMode;
-        readonly int _srid;
+        private readonly string _connectionString;
+        string _placemarkColumnName, _tableName, _sqlGeoType;
+        readonly StringBuilder _log = new StringBuilder();
+        bool _geographyMode;
+        int _srid;
         BackgroundWorker _worker;
         readonly List<MapFeature> _mapFeatures = new List<MapFeature>();
         readonly List<string> _columnNames = new List<string>();
@@ -32,30 +36,31 @@ namespace KML2SQL
             }
         }
 
-        public MapUploader(string connectionString, string columnName, string fileLocation, string tableName, int srid,
-            bool geographyMode, StringBuilder log, string logFile)
+        public MapUploader(string connectionString)
         {
             _connectionString = connectionString;
-            _placemarkColumnName = columnName;
-            _tableName = tableName;
-            _geographyMode = geographyMode;
-            _srid = srid;
-            _log = log;
-            _logFile = logFile;
-            _sqlGeoType = geographyMode == true ? "geography" : "geometry";
-            Kml kml = KMLParser.Parse(fileLocation);
-            InitializeMapFeatures(kml);
-            InitializeBackgroundWorker();
         }
 
         private void InitializeMapFeatures(Kml kml)
         {
-            foreach (MapFeature mapFeature in EnumerablePlacemarks(kml))
+            foreach (var mapFeature in GetPlacemarks(kml))
             {
-                _mapFeatures.Add(mapFeature);
-                foreach (KeyValuePair<string, string> pair in mapFeature.Data)
-                    if (!_columnNames.Contains(pair.Key) && pair.Key.ToLower() != "id")
-                        _columnNames.Add(pair.Key);
+                if (mapFeature.GeometryType != null)
+                {
+                    _mapFeatures.Add(mapFeature);
+                    foreach (KeyValuePair<string, string> pair in mapFeature.Data)
+                    {
+                        if (!_columnNames.Contains(pair.Key) && pair.Key.ToLower() != "id")
+                        {
+                            _columnNames.Add(pair.Key);
+                        }
+                    }
+                }
+                else
+                {
+                    _log.Append("The map feature '" + mapFeature.Name + "' was not a polygon, linestring, " +
+                                "or point type. It will be skipped.\r\n");
+                }
             }
         }
 
@@ -63,16 +68,23 @@ namespace KML2SQL
         {
             _worker = new BackgroundWorker();
             _worker.WorkerReportsProgress = true;
-            _worker.DoWork += new DoWorkEventHandler(bw_DoWork);
-            _worker.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
-            _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerComleted);
+            _worker.DoWork += bw_DoWork;
+            _worker.ProgressChanged += bw_ProgressChanged;
             _worker.WorkerSupportsCancellation = true;
         }
 
-        public void Upload()
+        public void Upload(string columnName, string fileLocation, string tableName, int srid, bool geographyMode)
         {
+            _placemarkColumnName = columnName;
+            _tableName = tableName;
+            _geographyMode = geographyMode;
+            _srid = srid;
+            _sqlGeoType = geographyMode ? "geography" : "geometry";
+            Kml kml = KMLParser.Parse(fileLocation);
+            InitializeMapFeatures(kml);
+            InitializeBackgroundWorker();
 #if !DEBUG
-            worker.RunWorkerAsync();
+            _worker.RunWorkerAsync();
 #else
             DoWork();
 #endif
@@ -80,7 +92,6 @@ namespace KML2SQL
 
         private void DoWork()
         {
-            var failed = false;
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
@@ -92,7 +103,8 @@ namespace KML2SQL
                     {
                         try
                         {
-                            SqlCommand command = MsSqlCommandCreator.CreateCommand(mapFeature, _geographyMode, _srid, _tableName, _placemarkColumnName, connection);
+                            SqlCommand command = MsSqlCommandCreator.CreateCommand(mapFeature, _geographyMode, _srid,
+                                _tableName, _placemarkColumnName, connection);
                             command.ExecuteNonQuery();
                         }
                         catch (Exception ex)
@@ -103,13 +115,29 @@ namespace KML2SQL
                     }
                     _worker.ReportProgress(0, "Done!");
                 }
-                if (failed)
-                    throw new AggregateException("Import failed");
             }
             catch (Exception ex)
             {
-                _worker.ReportProgress(0, ex.Message);
+                _worker.ReportProgress(0, ex.Message + "\r\n\r\n" + ex);
                 _worker.CancelAsync();
+                MessageBox.Show("The process failed with the following error: \r\n\r\n " + ex.Message, "Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                WriteOutLog();
+            }
+        }
+
+        private void WriteOutLog()
+        {
+            string _logFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                                + ConfigurationManager.AppSettings["AppFolder"];
+            string logFile = String.Format("{0}\\KML2SQL_Log_{1:yyyy-MM-dd-hhmmss-fff}.txt", _logFolder, DateTime.Now);
+            using (var writer = new StreamWriter(logFile, true))
+            {
+                if (_log != null)
+                    writer.Write(_log);
             }
         }
 
@@ -123,16 +151,7 @@ namespace KML2SQL
             Progress = e.UserState.ToString();
         }
 
-        private void bw_RunWorkerComleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            using (var writer = new StreamWriter(_logFile, true))
-            {
-                if (_log != null)
-                    writer.Write(_log);
-            }
-        }
-
-        private static IEnumerable<MapFeature> EnumerablePlacemarks(Kml kml)
+        private static IEnumerable<MapFeature> GetPlacemarks(Kml kml)
         {
             int id = 1;
             foreach (var placemark in kml.Flatten().OfType<Placemark>())
@@ -156,25 +175,34 @@ namespace KML2SQL
             }
             catch
             {
-                _worker.ReportProgress(0, "No table found to drop");
+                _worker.ReportProgress(0, "Could not drop table. This is most likely becuase there was no table to drop, " +
+                                          "but it may be because you do not have sufficient priviledges.");
             }
         }
 
         private void CreateTable(SqlConnection connection)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(String.Format("CREATE TABLE [{0}] (", _tableName));
-            sb.Append("[Id] INT NOT NULL PRIMARY KEY,");
-            if (_columnNames.Count > 0)
+            try
             {
-                foreach (string columnName in _columnNames)
-                    sb.Append(String.Format("[{0}] VARCHAR(max), ", columnName));
+                StringBuilder sb = new StringBuilder();
+                sb.Append(String.Format("CREATE TABLE [{0}] (", _tableName));
+                sb.Append("[Id] INT NOT NULL PRIMARY KEY,");
+                if (_columnNames.Count > 0)
+                {
+                    foreach (string columnName in _columnNames)
+                        sb.Append(String.Format("[{0}] VARCHAR(max), ", columnName));
+                }
+                sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", _placemarkColumnName, _sqlGeoType));
+                var command = new SqlCommand(sb.ToString(), connection);
+                command.CommandType = System.Data.CommandType.Text;
+                command.ExecuteNonQuery();
+                _worker.ReportProgress(0, "Table Created");
             }
-            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", _placemarkColumnName, _sqlGeoType));
-            var command = new SqlCommand(sb.ToString(), connection);
-            command.CommandType = System.Data.CommandType.Text;
-            command.ExecuteNonQuery();
-            _worker.ReportProgress(0, "Table Created");
+            catch (Exception ex)
+            {
+                _worker.ReportProgress(0, "Could not create table. You may not have sufficient priviledges. Full error log is: " + ex.Message);
+                throw;
+            }
         }
 
         #region INotifyPropertyChanged Members

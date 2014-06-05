@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KML2SQL;
 using SharpKml.Base;
@@ -12,70 +13,76 @@ namespace KML2SQLTests
     [TestClass]
     public class Tests
     {
+        //====================================================================================================
+        //
+        // Yes, I know these aren't real tests. Sorry. I wasn't really doing TDD at the time I wrote this.
+        //
+        //====================================================================================================
+
+        private const string UserInfoLocation = @"C:\Misc\UserInfo.json";
+        readonly string _settingsText = File.ReadAllText(UserInfoLocation);
+        private UserInfo _userInfo;
+
         MapUploader myUploader;
-        //Well, obviously you don't get my passwords! :D
-        PasswordList passwordList = new PasswordList();
         Kml kml;
-        StringBuilder log = new StringBuilder();
-        string logdir = string.Empty;
-        string login = "zshuford";
-        string database = "TestDB";
-        string server = "sdfzufbaq8.database.windows.net";
         private string connectionString;
 
         [TestInitialize]
         public void InitializeTests()
         {
-            connectionString = "Data Source=" + server + ";Initial Catalog=" + database + ";Persist Security Info=True;User ID="
-                + login + ";Password=" + passwordList[0];
+            _userInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfo>(_settingsText);
+            connectionString = "Data Source=" + _userInfo.Server + ";Initial Catalog=" + _userInfo.Database +
+                               ";Persist Security Info=True;User ID="
+                               + _userInfo.Username + ";Password=" + _userInfo.Password;
+            myUploader = new MapUploader(connectionString);
         }
 
         [TestMethod]
         public void CheckNPA()
         {
-            myUploader = new MapUploader(connectionString, "polygon", @"TestData\npa.kml", "myTable", 4326, true, log, logdir);
-            myUploader.Upload();
+            myUploader.Upload("polygon", @"TestData\npa.kml", _userInfo.Table, 4326, true);
         }
 
         [TestMethod]
         public void BasicKML()
         {
-            myUploader = new MapUploader(connectionString, "polygon", @"TestData\Basic.kml", "myTable", 4326, true, log, logdir);
-            myUploader.Upload();
+            myUploader.Upload( "polygon", @"TestData\Basic.kml", _userInfo.Table, 4326, true);
         }
 
         [TestMethod]
         public void BasicKMLGeometry()
         {
-            myUploader = new MapUploader(connectionString, "polygon", @"TestData\Basic.kml", "myTable", 4326, false, log, logdir);
-            myUploader.Upload();
+            myUploader.Upload("polygon", @"TestData\Basic.kml", _userInfo.Table, 4326, false);
         }
 
         [TestMethod]
         public void CheckNPAGeometry()
         {
-            myUploader = new MapUploader(connectionString, "polygon", @"TestData\npa.kml", "myTable", 4326, false, log, logdir);
-            myUploader.Upload();
+            myUploader.Upload("polygon", @"TestData\npa.kml", _userInfo.Table, 4326, false);
         }
 
         [TestMethod]
         public void SchoolTest()
         {
-            myUploader = new MapUploader(connectionString, "polygon", @"TestData\school.kml", "myTable", 4326, true, log, logdir);
-            myUploader.Upload();
+            myUploader.Upload( "polygon", @"TestData\school.kml", _userInfo.Table, 4326, true);
         }
 
         [TestMethod]
         public void SchoolTestGeometry()
         {
-            myUploader = new MapUploader(connectionString, "polygon", @"TestData\school.kml", "myTable", 4326, false, log, logdir);
-            myUploader.Upload();
+            myUploader.Upload("polygon", @"TestData\school.kml", _userInfo.Table, 4326, false);
+        }
+
+        [TestMethod]
+        public void GoogleSample()
+        {
+            myUploader.Upload("polygon", @"TestData\KML_Samples.kml", _userInfo.Table, 4326, false);
         }
 
         //[TestMethod]
         //public void BasicKmlOnMySql()
         //{
-        //    myUploader = new MapUploader("192.168.0.202", "test", "root", passwordList[1], "placemark", @"TestData\Basic.kml", "myTable", 4326, true);
+        //    myUploader = new MapUploader("192.168.0.202", "test", "root", passwordList[1], "placemark", @"TestData\Basic.kml", myInfo.Table, 4326, true);
         //    myUploader.Upload();
         //}
     }

@@ -73,7 +73,7 @@ namespace KML2SQL
                                         SET @geom = geometry::STPolyFromText('POLYGON((");
                         foreach (Vector coordinate in mapFeature.Coordinates)
                         {
-                            commandString.Append(coordinate.Longitude.ToString() + " " + coordinate.Latitude.ToString() + ", ");
+                            commandString.Append(coordinate.Longitude + " " + coordinate.Latitude + ", ");
                         }
                         commandString.Remove(commandString.Length - 2, 2).ToString();
                         commandString.Append(@"))', " + srid + @");");
@@ -87,7 +87,7 @@ namespace KML2SQL
                                     SET @validGeom = geometry::STLineFromText('LINESTRING (");
                         foreach (Vector coordinate in mapFeature.Coordinates)
                         {
-                            commandString.Append(coordinate.Longitude.ToString() + " " + coordinate.Latitude.ToString() + ", ");
+                            commandString.Append(coordinate.Longitude + " " + coordinate.Latitude + ", ");
                         }
                         commandString.Remove(commandString.Length - 2, 2).ToString();
                         commandString.Append(@")', " + srid + @");");
@@ -95,15 +95,19 @@ namespace KML2SQL
                         //commandString.Append("SET @validGeom = @geom.MakeValid().STUnion(@geom.STStartPoint());");
                     }
                     break;
-                default:
+                case OpenGisGeometryType.Point:
                     {
                         commandString.Append(@"DECLARE @validGeom geometry;");
                         commandString.Append("SET @validGeom = geometry::STPointFromText('POINT (");
-                        commandString.Append(mapFeature.Coordinates[0].Longitude.ToString() + " " + mapFeature.Coordinates[0].Latitude.ToString());
+                        commandString.Append(mapFeature.Coordinates[0].Longitude + " " + mapFeature.Coordinates[0].Latitude);
                         commandString.Append(@")', " + srid + @");");
                     }
                     break;
-
+                default:
+                {
+                    //Do nothing. It's probably polygon point we don't support.
+                }
+                    break;
             }
             return commandString.ToString();
         }
