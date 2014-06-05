@@ -6,6 +6,12 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 <a href="http://goo.gl/TbYhK"><img src="https://raw.github.com/Pharylon/KML2SQL/master/download.png" /></a>
 
 ###What's New:
+**6/5/2014 - v 1.3**
+* Persistence. It will remember your username and server between uses (thanks Simon Timms!) 
+* Improved error reporting to user.
+* If one of the placemarks can't be uploaded, the entire file won't fail. Placemarks that don't upload are noted in the error log.
+* Just a bunch of behind-the-scenes cleanup to make it less ugly. This code is ugly from when I was new at software, so try not to judge me. ;)
+
 **11/10/2013 - v 1.2**
 * Better error reporting when something goes wrong.
 * Made it more clear that a new table will be created, and existing tables will be overwritten.

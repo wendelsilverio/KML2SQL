@@ -58,8 +58,8 @@ namespace KML2SQL
                 }
                 else
                 {
-                    _log.Append("The map feature '" + mapFeature.Name + "' was not a polygon, linestring, " +
-                                "or point type. It will be skipped.\r\n");
+                    _log.Append("The map feature '" + mapFeature.Name + "' was not a Polygon, Linestring, " +
+                                "or Point type. It will be skipped.\r\n");
                 }
             }
         }
