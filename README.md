@@ -1,4 +1,4 @@
-#KML2SQL v 1.2
+#KML2SQL v 1.3
 
 ###Overview
 KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storing the placemarks in geography or geometry objects.
