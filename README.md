@@ -10,7 +10,7 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 * Persistence. It will remember your username and server between uses (thanks Simon Timms!) 
 * Improved error reporting to user.
 * If one of the placemarks can't be uploaded, the entire file won't fail. Placemarks that don't upload are noted in the error log.
-* Just a bunch of behind-the-scenes cleanup to make it less ugly. This code is ugly from when I was new at software, so try not to judge me. ;)
+* Just a bunch of behind-the-scenes cleanup to make it slightly less ugly. 
 
 **11/10/2013 - v 1.2**
 * Better error reporting when something goes wrong.
@@ -29,6 +29,6 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 
 If you have any questions, feel free to post issues here on GitHub, email me at zach(at)zachshuford(dotcom), hit me up on [Google+](https://plus.google.com/100663438782533486183), or tweet me @pharylon. If something isn't working, let me know! If you really need some feature bad, let me know! The amount of work I put into this project and number of features I add is directly proportional to how many people ask for them. 
 
-Lastly, a big "Thank You!" to [SharpKML](http://sharpkml.codeplex.com/) without which this project would be a lot more work and [VectorLady](http://vectorlady.com/) who authored the icon, which is released under the Creative Commons Lisence 3.0 Attributoin.
+Lastly, a big "Thank You!" to [SharpKML](http://sharpkml.codeplex.com/) without which this project would be a lot more work and [VectorLady](http://vectorlady.com/) who authored the icon, which is released under the Creative Commons License 3.0 Attribution.
 
 Finally, KML2SQL itself is licensed under the [BSD 2 Clause License](https://github.com/Pharylon/KML2SQL/blob/master/License.txt). 
