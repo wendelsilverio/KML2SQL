@@ -6,7 +6,10 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 <a href="http://pharylon.github.io"><img src="https://raw.github.com/Pharylon/KML2SQL/master/download.png" /></a>
 
 ###What's New:
-**6/5/2014 - v 1.3**
+**03/05/2015 - v 1.4**
+* Ability to use Windows Integrated Security (thanks mirhagk!)
+
+**06/05/2014 - v 1.3**
 * Persistence. It will remember your username and server between uses (thanks Simon Timms!) 
 * Improved error reporting to user.
 * If one of the placemarks can't be uploaded, the entire file won't fail. Placemarks that don't upload are noted in the error log.
@@ -16,7 +19,7 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 * Better error reporting when something goes wrong.
 * Made it more clear that a new table will be created, and existing tables will be overwritten.
 
-**6/2/2013 - v 1.1** - A big update that has significantly reworked the backend and allows for the following:
+**06/02/2013 - v 1.1** - A big update that has significantly reworked the backend and allows for the following:
 * **Improved Security!** I think it's safe against SQL injection, but you should still be careful.
 * **Placemark Data!** SimpleData and Data types are now uploaded as additional columns. Note that since Data entries are untyped and SimpleData schemas are unreliable, all data is uploaded into Varchar(max) columns. Oh, and nulls are allowed in all columns except ID and geometry/geography. So you end up with a really inefficient database, but converting them all to ints, floats, or whatever is just a few SQL commands away, right?
 * **Improved Expandability!** It should be easier to add support for mySQL and the like in the future.
