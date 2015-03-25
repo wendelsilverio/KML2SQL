@@ -15,5 +15,6 @@ namespace KML2SQL
         public bool Geography { get; set; }
         public bool SRIDEnabled { get; set; }
         public string SRID { get; set; }
+        public bool UseIntegratedSecurity { get; set; }
     }
 }

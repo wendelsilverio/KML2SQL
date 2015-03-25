@@ -130,6 +130,7 @@ namespace KML2SQL
             settings.SRID = sridBox.Text;
             settings.SRIDEnabled = sridCheckBox.IsChecked.Value;
             settings.Geography = geographyMode.IsChecked.Value;
+            settings.UseIntegratedSecurity = integratedSecurityCheckbox.IsChecked.Value;
             new SettingsPersister().Persist(settings);
         }
         private void RestoreSettings()
@@ -146,13 +147,18 @@ namespace KML2SQL
                 KMLFileLocationBox.Text = settings.KMLFileName;
                 serverNameBox.Text = settings.ServerName;
                 databaseNameBox.Text = settings.DatabaseName;
+                integratedSecurityCheckbox.IsChecked = settings.UseIntegratedSecurity;
             }
         }
 
         private string BuildConnectionString()
         {
-            return "Data Source=" + serverNameBox.Text + ";Initial Catalog=" + databaseNameBox.Text + ";Persist Security Info=True;User ID="
-                + userNameBox.Text + ";Password=" + passwordBox.Password;
+            string connString = "Data Source=" + serverNameBox.Text + ";Initial Catalog=" + databaseNameBox.Text + ";Persist Security Info=True;";
+            if (integratedSecurityCheckbox.IsEnabled)
+                connString += "Integrated Security = SSPI;";
+            else
+                connString += "User ID=" + userNameBox.Text + ";Password=" + passwordBox.Password;
+            return connString;
         }
 
         private int ParseSRID(bool geographyMode)
@@ -235,6 +241,20 @@ namespace KML2SQL
         private void Log_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(_appFolder);
+        }
+
+        private void IntegratedSecurityCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (integratedSecurityCheckbox.IsChecked.Value)
+            {
+                userNameBox.IsEnabled = false;
+                passwordBox.IsEnabled = false;
+            }
+            else
+            {
+                userNameBox.IsEnabled = true;
+                passwordBox.IsEnabled = true;
+            }
         }
     }
 }
