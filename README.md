@@ -3,7 +3,7 @@
 ###Overview
 KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storing the placemarks in geography or geometry objects.
 
-<a href="http://pharylon.github.io"><img src="https://raw.github.com/Pharylon/KML2SQL/master/download.png" /></a>
+<a href="https://github.com/Pharylon/KML2SQL/releases/latest"><img src="https://raw.github.com/Pharylon/KML2SQL/master/download.png" /></a>
 
 ###What's New:
 **03/05/2015 - v 1.4**
