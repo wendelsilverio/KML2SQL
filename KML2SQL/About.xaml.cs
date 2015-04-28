@@ -22,7 +22,7 @@ namespace KML2SQL
         public About()
         {
             InitializeComponent();
-            AboutBox.Text = @"KML2SQL v 1.1.3 - by Zachary Shuford
+            AboutBox.Text = @"KML2SQL v 1.4.2 - by Zachary Shuford
 If you like it, found a bug, or whatever, please drop me a line at zach@zachshuford.com or tweet me @pharylon.
 
 Now for some boring legal stuff:
