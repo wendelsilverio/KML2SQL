@@ -154,7 +154,7 @@ namespace KML2SQL
         private string BuildConnectionString()
         {
             string connString = "Data Source=" + serverNameBox.Text + ";Initial Catalog=" + databaseNameBox.Text + ";Persist Security Info=True;";
-            if (integratedSecurityCheckbox.IsEnabled)
+            if (integratedSecurityCheckbox.IsChecked ?? false)
                 connString += "Integrated Security = SSPI;";
             else
                 connString += "User ID=" + userNameBox.Text + ";Password=" + passwordBox.Password;
