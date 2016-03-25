@@ -7,6 +7,7 @@ using SharpKml.Dom;
 using SharpKml.Engine;
 using System.Diagnostics;
 using System.Text;
+using System.Configuration;
 
 namespace KML2SQLTests
 {
@@ -17,66 +18,66 @@ namespace KML2SQLTests
         //
         // Yes, I know these aren't real tests. Sorry. I wasn't really doing TDD at the time I wrote this.
         //
-        //====================================================================================================
-
-        private const string UserInfoLocation = @"C:\Misc\UserInfo.json";
-        readonly string _settingsText = File.ReadAllText(UserInfoLocation);
-        private UserInfo _userInfo;
+        //===================================================================================================
 
         MapUploader myUploader;
         Kml kml;
         private string connectionString;
+        string tableName = "Kml2SqlTest";
+
 
         [TestInitialize]
         public void InitializeTests()
         {
-            _userInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfo>(_settingsText);
-            connectionString = "Data Source=" + _userInfo.Server + ";Initial Catalog=" + _userInfo.Database +
-                               ";Persist Security Info=True;User ID="
-                               + _userInfo.Username + ";Password=" + _userInfo.Password;
-            myUploader = new MapUploader(connectionString);
+            myUploader = new MapUploader(ConfigurationManager.ConnectionStrings["TestDb"].ToString());
         }
 
         [TestMethod]
         public void CheckNPA()
         {
-            myUploader.Upload("polygon", @"TestData\npa.kml", _userInfo.Table, 4326, true);
+            myUploader.Upload("polygon", @"TestData\npa.kml", tableName + "NPA", 4326, true);
         }
 
         [TestMethod]
         public void BasicKML()
         {
-            myUploader.Upload( "polygon", @"TestData\Basic.kml", _userInfo.Table, 4326, true);
+            myUploader.Upload( "polygon", @"TestData\Basic.kml", tableName + "Basic", 4326, true);
         }
 
         [TestMethod]
         public void BasicKMLGeometry()
         {
-            myUploader.Upload("polygon", @"TestData\Basic.kml", _userInfo.Table, 4326, false);
+            myUploader.Upload("polygon", @"TestData\Basic.kml", tableName + "BasicGeom", 4326, false);
         }
 
         [TestMethod]
         public void CheckNPAGeometry()
         {
-            myUploader.Upload("polygon", @"TestData\npa.kml", _userInfo.Table, 4326, false);
+            myUploader.Upload("polygon", @"TestData\npa.kml", tableName + "NPAGeom", 4326, false);
         }
 
         [TestMethod]
         public void SchoolTest()
         {
-            myUploader.Upload( "polygon", @"TestData\school.kml", _userInfo.Table, 4326, true);
+            myUploader.Upload( "polygon", @"TestData\school.kml", tableName + "School", 4326, true);
         }
 
         [TestMethod]
         public void SchoolTestGeometry()
         {
-            myUploader.Upload("polygon", @"TestData\school.kml", _userInfo.Table, 4326, false);
+            myUploader.Upload("polygon", @"TestData\school.kml", tableName + "SchoolGeom", 4326, false);
         }
 
         [TestMethod]
         public void GoogleSample()
         {
-            myUploader.Upload("polygon", @"TestData\KML_Samples.kml", _userInfo.Table, 4326, false);
+            myUploader.Upload("polygon", @"TestData\KML_Samples.kml", tableName + "Google", 4326, false);
+        }
+
+        [TestMethod]
+        public void UsZips()
+        {
+            myUploader.Upload("polygon", @"TestData\us_zips.kml", tableName + "Zips", 4326, false);
         }
 
         //[TestMethod]
