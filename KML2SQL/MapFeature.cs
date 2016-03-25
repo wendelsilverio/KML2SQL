@@ -18,6 +18,7 @@ namespace KML2SQL
         public int Id;
         public string Name {get { return _placemark.Name ?? Id.ToString(); }}
         public Vector[] Coordinates { get; private set; }
+        public Vector[][] InnerCoordinates { get; private set; }
         public Dictionary<string, string> Data = new Dictionary<string, string>();
 
         public OpenGisGeographyType? GeographyType { get; private set; }
@@ -66,7 +67,16 @@ namespace KML2SQL
                     Coordinates = InitializePointCoordinates(placemark);
                     break;
                 case OpenGisGeometryType.Polygon:
-                    Coordinates = InitializePolygonCoordinates(placemark);
+                    Vector[][] coords = InitializePolygonCoordinates(placemark);
+                    Coordinates = coords[0];
+                    if (coords.Length > 1)
+                    {
+                        InnerCoordinates = coords.Skip(1).ToArray();
+                    }
+                    else
+                    {
+                        InnerCoordinates = new Vector[0][];
+                    }
                     break;
             }
         }
@@ -115,14 +125,17 @@ namespace KML2SQL
             return coordinates.ToArray();
         }
 
-        private static Vector[] InitializePolygonCoordinates(Placemark placemark)
+        private static Vector[][] InitializePolygonCoordinates(Placemark placemark)
         {
-            List<Vector> coordinates = new List<Vector>();
+            List<List<Vector>> coordinates = new List<List<Vector>>();
+            coordinates.Add(new List<Vector>());
+
             foreach (var polygon in placemark.Flatten().OfType<Polygon>())
             {
-                coordinates.AddRange(polygon.OuterBoundary.LinearRing.Coordinates);
+                coordinates[0].AddRange(polygon.OuterBoundary.LinearRing.Coordinates);
+                coordinates.AddRange(polygon.InnerBoundary.Select(inner => inner.LinearRing.Coordinates.ToList()));
             }
-            return coordinates.ToArray();
+            return coordinates.Select(c => c.ToArray()).ToArray();
         }
 
         public void ReverseRingOrientation()
