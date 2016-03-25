@@ -24,6 +24,7 @@ namespace KML2SQL
         readonly List<MapFeature> _mapFeatures = new List<MapFeature>();
         readonly List<string> _columnNames = new List<string>();
         private string _progress = "";
+        bool _forceValid;
 
         public string Progress
         {
@@ -73,13 +74,14 @@ namespace KML2SQL
             _worker.WorkerSupportsCancellation = true;
         }
 
-        public void Upload(string columnName, string fileLocation, string tableName, int srid, bool geographyMode)
+        public void Upload(string columnName, string fileLocation, string tableName, int srid, bool geographyMode, bool forceValid = false)
         {
             _placemarkColumnName = columnName;
             _tableName = tableName;
             _geographyMode = geographyMode;
             _srid = srid;
             _sqlGeoType = geographyMode ? "geography" : "geometry";
+            _forceValid = forceValid;
             Kml kml = KMLParser.Parse(fileLocation);
             InitializeMapFeatures(kml);
             InitializeBackgroundWorker();
@@ -101,10 +103,11 @@ namespace KML2SQL
                     CreateTable(connection);
                     foreach (MapFeature mapFeature in _mapFeatures)
                     {
+                        SqlCommand command;
                         try
                         {
-                            SqlCommand command = MsSqlCommandCreator.CreateCommand(mapFeature, _geographyMode, _srid,
-                                _tableName, _placemarkColumnName, connection);
+                            command = MsSqlCommandCreator.CreateCommand(mapFeature, _geographyMode, _srid,
+                                _tableName, _placemarkColumnName, connection, _forceValid);
                             command.ExecuteNonQuery();
                         }
                         catch (Exception ex)

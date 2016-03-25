@@ -21,8 +21,6 @@ namespace KML2SQLTests
         //===================================================================================================
 
         MapUploader myUploader;
-        Kml kml;
-        private string connectionString;
         string tableName = "Kml2SqlTest";
 
 
@@ -77,7 +75,7 @@ namespace KML2SQLTests
         [TestMethod]
         public void UsZips()
         {
-            myUploader.Upload("polygon", @"TestData\us_zips.kml", tableName + "Zips", 4326, false);
+            myUploader.Upload("polygon", @"TestData\us_zips.kml", tableName + "Zips", 4326, false, true);
         }
 
         //[TestMethod]

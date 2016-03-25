@@ -92,11 +92,8 @@ namespace KML2SQL
         private void CreateDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
             SaveSettings();
-            bool geography;
-            if (geographyMode.IsChecked != null)
-                geography = (bool)geographyMode.IsChecked;
-            else
-                geography = false;
+            bool geography = geographyMode.IsChecked != null ? geographyMode.IsChecked.Value : false;
+            bool fixPolygons = fixBrokenPolygons.IsChecked != null ? fixBrokenPolygons.IsChecked.Value : false;
             int srid = ParseSRID(geography);
             if (srid != 0)
             {
@@ -108,7 +105,7 @@ namespace KML2SQL
                     b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     b.Path = new PropertyPath("Progress");
                     resultTextBox.SetBinding(TextBlock.TextProperty, b);
-                    myUploader.Upload(columnNameBox.Text, KMLFileLocationBox.Text, tableBox.Text, srid, geography);
+                    myUploader.Upload(columnNameBox.Text, KMLFileLocationBox.Text, tableBox.Text, srid, geography, fixPolygons);
                 }
                 catch (Exception ex)
                 {
@@ -131,6 +128,7 @@ namespace KML2SQL
             settings.SRIDEnabled = sridCheckBox.IsChecked.Value;
             settings.Geography = geographyMode.IsChecked.Value;
             settings.UseIntegratedSecurity = integratedSecurityCheckbox.IsChecked.Value;
+            settings.FixBrokenPolygons = fixBrokenPolygons.IsChecked.Value;
             new SettingsPersister().Persist(settings);
         }
         private void RestoreSettings()
@@ -148,6 +146,7 @@ namespace KML2SQL
                 serverNameBox.Text = settings.ServerName;
                 databaseNameBox.Text = settings.DatabaseName;
                 integratedSecurityCheckbox.IsChecked = settings.UseIntegratedSecurity;
+                integratedSecurityCheckbox.IsChecked = settings.FixBrokenPolygons;
             }
         }
 

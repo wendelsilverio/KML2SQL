@@ -16,5 +16,6 @@ namespace KML2SQL
         public bool SRIDEnabled { get; set; }
         public string SRID { get; set; }
         public bool UseIntegratedSecurity { get; set; }
+        public bool FixBrokenPolygons { get; set; }
     }
 }
