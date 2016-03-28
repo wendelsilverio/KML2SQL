@@ -39,6 +39,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SharpKml, Version=2.1.1.0, Culture=neutral, PublicKeyToken=9bb853c026a5c0ac, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpKml.Core.2.1.1\lib\portable-net4+sl5+wp8+win8\SharpKml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
@@ -80,10 +84,6 @@
     <ProjectReference Include="..\KML2SQL\KML2SQL.csproj">
       <Project>{9fffe8ad-a2a6-4ff6-afa4-52d543c9c5c0}</Project>
       <Name>KML2SQL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpkml-25721\SharpKml\SharpKml.csproj">
-      <Project>{53f12a60-e9cc-44bc-8366-1ae3ab2b547d}</Project>
-      <Name>SharpKml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
