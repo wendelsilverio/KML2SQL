@@ -3,28 +3,28 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows;
-using System.Windows.Documents;
 using SharpKml.Dom;
 using SharpKml.Engine;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 
-namespace KML2SQL
+namespace Kml2Sql.MsSql
 {
     public class MapUploader : INotifyPropertyChanged
     {
         private readonly string _connectionString;
         string _placemarkColumnName, _tableName, _sqlGeoType;
         readonly StringBuilder _log = new StringBuilder();
-        bool _geographyMode;
+        GeoType geoType;
         int _srid;
         BackgroundWorker _worker;
         readonly List<MapFeature> _mapFeatures = new List<MapFeature>();
         readonly List<string> _columnNames = new List<string>();
         private string _progress = "";
         bool _forceValid;
+        public Action<string> UhandledExceptionWriter { get; set; }
+        public string LogFolder { get; set; }
 
         public string Progress
         {
@@ -40,27 +40,20 @@ namespace KML2SQL
         public MapUploader(string connectionString)
         {
             _connectionString = connectionString;
+            LogFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\KML2SQL";
         }
 
         private void InitializeMapFeatures(Kml kml)
         {
             foreach (var mapFeature in GetPlacemarks(kml))
             {
-                if (mapFeature.GeometryType != null)
+                _mapFeatures.Add(mapFeature);
+                foreach (KeyValuePair<string, string> pair in mapFeature.Data)
                 {
-                    _mapFeatures.Add(mapFeature);
-                    foreach (KeyValuePair<string, string> pair in mapFeature.Data)
+                    if (!_columnNames.Contains(pair.Key) && pair.Key.ToLower() != "id")
                     {
-                        if (!_columnNames.Contains(pair.Key) && pair.Key.ToLower() != "id")
-                        {
-                            _columnNames.Add(pair.Key);
-                        }
+                        _columnNames.Add(pair.Key);
                     }
-                }
-                else
-                {
-                    _log.Append("The map feature '" + mapFeature.Name + "' was not a Polygon, Linestring, " +
-                                "or Point type. It will be skipped.\r\n");
                 }
             }
         }
@@ -74,13 +67,13 @@ namespace KML2SQL
             _worker.WorkerSupportsCancellation = true;
         }
 
-        public void Upload(string columnName, string fileLocation, string tableName, int srid, bool geographyMode, bool forceValid = false)
+        public void Upload(string columnName, string fileLocation, string tableName, int srid, GeoType geoType, bool forceValid = false)
         {
             _placemarkColumnName = columnName;
             _tableName = tableName;
-            _geographyMode = geographyMode;
+            this.geoType = geoType;
             _srid = srid;
-            _sqlGeoType = geographyMode ? "geography" : "geometry";
+            _sqlGeoType = geoType == GeoType.Geography ? "geography" : "geometry";
             _forceValid = forceValid;
             Kml kml = KMLParser.Parse(fileLocation);
             InitializeMapFeatures(kml);
@@ -106,7 +99,7 @@ namespace KML2SQL
                         SqlCommand command;
                         try
                         {
-                            command = MsSqlCommandCreator.CreateCommand(mapFeature, _geographyMode, _srid,
+                            command = MsSqlCommandCreator.CreateCommand(mapFeature, geoType, _srid,
                                 _tableName, _placemarkColumnName, connection, _forceValid);
                             command.ExecuteNonQuery();
                         }
@@ -123,8 +116,13 @@ namespace KML2SQL
             {
                 _worker.ReportProgress(0, ex.Message + "\r\n\r\n" + ex);
                 _worker.CancelAsync();
-                MessageBox.Show("The process failed with the following error: \r\n\r\n " + ex.Message, "Error", 
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                if (this.UhandledExceptionWriter != null)
+                {
+                    var errorText = "The process failed with the following error: \r\n\r\n " + ex.Message;
+                    UhandledExceptionWriter(errorText);
+                }
+                //MessageBox.Show("The process failed with the following error: \r\n\r\n " + ex.Message, "Error", 
+                //    MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -134,9 +132,7 @@ namespace KML2SQL
 
         private void WriteOutLog()
         {
-            string _logFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                                + ConfigurationManager.AppSettings["AppFolder"];
-            string logFile = String.Format("{0}\\KML2SQL_Log_{1:yyyy-MM-dd-hhmmss-fff}.txt", _logFolder, DateTime.Now);
+            string logFile = String.Format("{0}\\KML2SQL_Log_{1:yyyy-MM-dd-hhmmss-fff}.txt", LogFolder, DateTime.Now);
             using (var writer = new StreamWriter(logFile, true))
             {
                 if (_log != null)
@@ -154,17 +150,30 @@ namespace KML2SQL
             Progress = e.UserState.ToString();
         }
 
-        private static IEnumerable<MapFeature> GetPlacemarks(Kml kml)
+        private IEnumerable<MapFeature> GetPlacemarks(Kml kml)
         {
             int id = 1;
             foreach (var placemark in kml.Flatten().OfType<Placemark>())
             {
-                MapFeature mapFeature = new MapFeature(placemark, id);
+
+                if (placemark.Flatten().Any(p => IsValidType(p)))
+                {
+                    MapFeature mapFeature = new MapFeature(placemark, id);
+                    yield return mapFeature;
+                }
+                else
+                {
+                    _log.Append("The map feature '" + placemark.Name + "' was not a Polygon, Linestring, " +
+                                "or Point type. It will be skipped.\r\n");
+                }                
                 id++;
-                yield return mapFeature;
             }
         }
 
+        private static bool IsValidType(Element e)
+        {
+            return e is Point || e is LineString || e is Polygon;
+        }
 
         private void DropTable(SqlConnection connection)
         {

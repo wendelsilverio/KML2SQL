@@ -33,7 +33,7 @@
             <TabItem Header="Create SQL Script">
                 <Grid Background="#FFE5E5E5">
                     <Label x:Name="label" Content="Save Script To:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="76"/>
-                    <TextBox x:Name="saveScriptTo" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="C:\KmlScript.sql" VerticalAlignment="Top" Width="382" Margin="10,34,0,0" TextChanged="saveScriptTo_TextChanged"/>
+                    <TextBox x:Name="saveScriptTo" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="C:\KmlScript.sql" VerticalAlignment="Top" Width="382" Margin="10,34,0,0"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Upload To Server">

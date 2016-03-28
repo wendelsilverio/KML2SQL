@@ -10,7 +10,7 @@ using SharpKml.Engine;
 
 namespace Kml2Sql.MsSql
 {
-    class MapFeature
+    internal class MapFeature
     {
         readonly Placemark _placemark;
 
@@ -21,7 +21,6 @@ namespace Kml2Sql.MsSql
         public Dictionary<string, string> Data = new Dictionary<string, string>();
 
         public ShapeType ShapeType { get; private set; }
-        public GeoType GeoType { get; private set; }
 
         public MapFeature(Placemark placemark, int id)
         {

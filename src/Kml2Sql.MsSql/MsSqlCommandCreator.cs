@@ -84,14 +84,7 @@ namespace Kml2Sql.MsSql
 
                         commandString.Append(@"))', " + srid + @");");
                         commandString.Append("DECLARE @validGeom geometry;");
-                        if (geographyMode == GeoType.Geography)
-                        {
-                            commandString.Append("SET @validGeom = @geom.MakeValid();");
-                        }
-                        else
-                        {
-                            commandString.Append("SET @validGeom = @geom.MakeValid();");
-                        }
+                        commandString.Append("SET @validGeom = @geom.MakeValid().STUnion(@geom.STStartPoint());");
                     }
                     break;
                 case ShapeType.LineString:

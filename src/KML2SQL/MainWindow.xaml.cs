@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
 using System.Diagnostics;
+using Kml2Sql.MsSql;
 
 namespace KML2SQL
 {
@@ -92,20 +93,26 @@ namespace KML2SQL
         private void CreateDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
             SaveSettings();
-            bool geography = geographyMode.IsChecked != null ? geographyMode.IsChecked.Value : false;
+            var geoType = geographyMode.IsChecked != null && geographyMode.IsChecked.Value ? GeoType.Geography : GeoType.Geometry;
             bool fixPolygons = fixBrokenPolygons.IsChecked != null ? fixBrokenPolygons.IsChecked.Value : false;
-            int srid = ParseSRID(geography);
+            int srid = ParseSRID(geoType);
             if (srid != 0)
             {
                 try
                 {
                     myUploader = new MapUploader(BuildConnectionString());
+                    myUploader.UhandledExceptionWriter = (errorText) =>
+                    {
+                        MessageBox.Show(errorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    };
+                    myUploader.LogFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                                + ConfigurationManager.AppSettings["AppFolder"];
                     Binding b = new Binding();
                     b.Source = myUploader;
                     b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     b.Path = new PropertyPath("Progress");
                     resultTextBox.SetBinding(TextBlock.TextProperty, b);
-                    myUploader.Upload(columnNameBox.Text, KMLFileLocationBox.Text, tableBox.Text, srid, geography, fixPolygons);
+                    myUploader.Upload(columnNameBox.Text, KMLFileLocationBox.Text, tableBox.Text, srid, geoType, fixPolygons);
                 }
                 catch (Exception ex)
                 {
@@ -160,9 +167,9 @@ namespace KML2SQL
             return connString;
         }
 
-        private int ParseSRID(bool geographyMode)
+        private int ParseSRID(GeoType geoType)
         {
-            if (!geographyMode)
+            if (geoType == GeoType.Geometry)
             {
                 return 4326;
             }
