@@ -100,7 +100,8 @@ namespace Kml2Sql.MsSql
                         try
                         {
                             command = MsSqlCommandCreator.CreateCommand(mapFeature, geoType, _srid,
-                                _tableName, _placemarkColumnName, connection, _forceValid);
+                                _tableName, _placemarkColumnName, _forceValid);
+                            command.Connection = connection;
                             command.ExecuteNonQuery();
                         }
                         catch (Exception ex)

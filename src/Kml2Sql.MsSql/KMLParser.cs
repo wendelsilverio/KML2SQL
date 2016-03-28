@@ -16,15 +16,21 @@ namespace Kml2Sql.MsSql
         {
             using (var sr = new StreamReader(filePath))
             {
-                KmlFile file = KmlFile.Load(sr);
+                return Parse(sr.BaseStream);
+            }
+                
+        }
+
+        public static Kml Parse(Stream fileStream)
+        {
+                KmlFile file = KmlFile.Load(fileStream);
                 Kml kml = file.Root as Kml;
                 if (kml == null)
                 {
                     throw new Exception("Could not parse file into KML. If this is a KMZ, unzip it first!");
-                }                    
+                }
                 return kml;
-            }
-                
+
         }
     }
 }

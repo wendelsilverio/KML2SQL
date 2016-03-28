@@ -12,8 +12,8 @@ namespace Kml2Sql.MsSql
 {
     static class MsSqlCommandCreator
     {
-        public static SqlCommand CreateCommand(MapFeature mapFeature, GeoType geographyMode, int srid, string tableName, 
-            string placemarkColumnName, SqlConnection connection, bool forceValid)
+        internal static SqlCommand CreateCommand(MapFeature mapFeature, GeoType geographyMode, int srid, string tableName, 
+            string placemarkColumnName, bool forceValid)
         {
             StringBuilder sbColumns = new StringBuilder();
             StringBuilder sbValues = new StringBuilder();
@@ -26,7 +26,7 @@ namespace Kml2Sql.MsSql
             sb.Append(ParseCoordinates(srid, mapFeature, geographyMode, forceValid));
             sb.Append(string.Format("INSERT INTO {0}(Id,{1}{2}) VALUES(@Id,{3}@placemark)", tableName, sbColumns, placemarkColumnName, sbValues));
             string sqlCommandText = sb.ToString();
-            SqlCommand sqlCommand = new SqlCommand(sqlCommandText, connection);
+            SqlCommand sqlCommand = new SqlCommand(sqlCommandText);
             sqlCommand.Parameters.AddWithValue("@Id", mapFeature.Id);
             foreach (KeyValuePair<string, string> simpleData in mapFeature.Data)
             {

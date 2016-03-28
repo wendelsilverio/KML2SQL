@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Configuration;
 using Kml2Sql.MsSql;
+using System.Data.SqlClient;
 
 namespace KML2SQLTests
 {
@@ -23,12 +24,26 @@ namespace KML2SQLTests
 
         MapUploader myUploader;
         string tableName = "Kml2SqlTest";
-
+        string connectionString;
 
         [TestInitialize]
         public void InitializeTests()
         {
-            myUploader = new MapUploader(ConfigurationManager.ConnectionStrings["TestDb"].ToString());
+            connectionString = ConfigurationManager.ConnectionStrings["TestDb"].ToString();
+            myUploader = new MapUploader(connectionString);
+        }
+
+        [TestMethod]
+        public void CheckNPANew()
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                var config = new Kml2SqlConfig();
+                config.MapColumnName("p1", "foo");
+                config.MapColumnName("p2", "bar");
+                Uploader.DropTable(conn, config.TableName);
+                Uploader.Upload(@"TestData\npa.kml", conn, config);
+            }
         }
 
         [TestMethod]
