@@ -47,12 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Kml2SqlConfig.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="KMLParser.cs" />
     <Compile Include="MapFeature.cs" />
-    <Compile Include="MapUploader.cs" />
-    <Compile Include="MsSqlCommandCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandCreator.cs" />
     <Compile Include="ShapeType.cs" />

@@ -22,7 +22,7 @@ namespace KML2SQLTests
         //
         //===================================================================================================
 
-        MapUploader myUploader;
+        Kml2SqlConfig myUploader;
         string tableName = "Kml2SqlTest";
         string connectionString;
 

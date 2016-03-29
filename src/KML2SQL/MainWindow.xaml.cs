@@ -26,7 +26,7 @@ namespace KML2SQL
     /// 
     public partial class MainWindow : Window
     {
-        MapUploader myUploader;
+        Kml2SqlConfig config;
 
         readonly string _appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) 
             + ConfigurationManager.AppSettings["AppFolder"];
@@ -100,13 +100,14 @@ namespace KML2SQL
             {
                 try
                 {
-                    myUploader = new MapUploader(BuildConnectionString());
-                    myUploader.UhandledExceptionWriter = (errorText) =>
-                    {
-                        MessageBox.Show(errorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    };
-                    myUploader.LogFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                                + ConfigurationManager.AppSettings["AppFolder"];
+                    var connectionString = BuildConnectionString();
+                    config = new Kml2SqlConfig();
+                    //myUploader.UhandledExceptionWriter = (errorText) =>
+                    //{
+                    //    MessageBox.Show(errorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //};
+                    //myUploader.LogFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                    //            + ConfigurationManager.AppSettings["AppFolder"];
                     Binding b = new Binding();
                     b.Source = myUploader;
                     b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
