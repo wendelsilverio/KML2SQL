@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kml2Sql.MsSql</RootNamespace>
     <AssemblyName>Kml2Sql.MsSql</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -49,11 +52,12 @@
   <ItemGroup>
     <Compile Include="Kml2SqlConfig.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="KMLParser.cs" />
     <Compile Include="MapFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommandCreator.cs" />
+    <Compile Include="Mapper.cs" />
     <Compile Include="ShapeType.cs" />
-    <Compile Include="Uploader.cs" />
+    <Compile Include="MapFeatureCommandCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -12,7 +12,7 @@ namespace Kml2Sql.MsSql
         LineString
     }
 
-    public enum GeoType
+    public enum PolygonType
     {
         Geometry,
         Geography

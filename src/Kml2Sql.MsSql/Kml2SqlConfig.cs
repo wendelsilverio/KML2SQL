@@ -10,7 +10,7 @@ namespace Kml2Sql.MsSql
         public string TableName { get; set; } = "KmlUpload";
         public string PlacemarkColumnName { get; set; } = "Placemark";
         public string IdColumnName { get; set; } = "Id";
-        public GeoType GeoType { get; set; }
+        public PolygonType GeoType { get; set; }
         public bool MakeValid { get; set; } = true;
         public bool FixPolygons { get; set; }
         public int Srid { get; set; } = 4326;

@@ -90,37 +90,56 @@ namespace KML2SQL
             sridBox.IsEnabled = false;
         }
 
-        private void CreateDatabaseButton_Click(object sender, RoutedEventArgs e)
+        private void CreateDatabaseButton_Click(object sender, RoutedEventArgs routedArgs)
         {
             SaveSettings();
-            var geoType = geographyMode.IsChecked != null && geographyMode.IsChecked.Value ? GeoType.Geography : GeoType.Geometry;
-            bool fixPolygons = fixBrokenPolygons.IsChecked != null ? fixBrokenPolygons.IsChecked.Value : false;
-            int srid = ParseSRID(geoType);
-            if (srid != 0)
+            UploadFile();
+        }
+
+        private void UploadFile()
+        {
+            try
             {
-                try
+                var connectionString = BuildConnectionString();
+                var config = GetConfig();
+                var progresss = new Progress<int>(UpdateResults);
+                var uploader = new Uploader(KMLFileLocationBox.Text, config, progresss);
+                if (tabControl.SelectedIndex == 0)
                 {
-                    var connectionString = BuildConnectionString();
-                    config = new Kml2SqlConfig();
-                    //myUploader.UhandledExceptionWriter = (errorText) =>
-                    //{
-                    //    MessageBox.Show(errorText, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //};
-                    //myUploader.LogFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    //            + ConfigurationManager.AppSettings["AppFolder"];
-                    Binding b = new Binding();
-                    b.Source = myUploader;
-                    b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                    b.Path = new PropertyPath("Progress");
-                    resultTextBox.SetBinding(TextBlock.TextProperty, b);
-                    myUploader.Upload(columnNameBox.Text, KMLFileLocationBox.Text, tableBox.Text, srid, geoType, fixPolygons);
+                    Task.Run(() => uploader.Upload(connectionString));
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("The process failed with the following error. See the log for details: \r\n\r\n " 
-                        + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var fileLoc = saveScriptTo.Text;
+                    Task.Run(() =>
+                    {
+                        var script = uploader.GetScript();
+                        File.WriteAllText(fileLoc, script);
+                    });
                 }
+                
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("The process failed with the following error. See the log for details: \r\n\r\n "
+                    + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void UpdateResults(int percentage)
+        {
+            resultTextBox.Text = percentage + "%";
+        }
+
+        private Kml2SqlConfig GetConfig()
+        {
+            config = new Kml2SqlConfig();
+            config.GeoType = geographyMode.IsChecked != null && geographyMode.IsChecked.Value ? PolygonType.Geography : PolygonType.Geometry;
+            config.FixPolygons = fixBrokenPolygons.IsChecked != null ? fixBrokenPolygons.IsChecked.Value : false;
+            config.Srid = ParseSRID(config.GeoType);
+            config.TableName = tableBox.Text;
+            config.PlacemarkColumnName = columnNameBox.Text;
+            return config;
         }
 
         private void SaveSettings()
@@ -168,9 +187,9 @@ namespace KML2SQL
             return connString;
         }
 
-        private int ParseSRID(GeoType geoType)
+        private int ParseSRID(PolygonType geoType)
         {
-            if (geoType == GeoType.Geometry)
+            if (geoType == PolygonType.Geometry)
             {
                 return 4326;
             }

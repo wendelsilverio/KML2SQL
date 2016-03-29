@@ -100,6 +100,7 @@
     </ApplicationDefinition>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsPersister.cs" />
+    <Compile Include="Uploader.cs" />
     <Page Include="About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

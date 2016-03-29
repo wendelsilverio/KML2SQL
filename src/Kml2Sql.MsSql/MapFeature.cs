@@ -7,28 +7,31 @@ using System.Threading.Tasks;
 using SharpKml.Base;
 using SharpKml.Dom;
 using SharpKml.Engine;
+using System.Data.SqlClient;
 
 namespace Kml2Sql.MsSql
 {
-    internal class MapFeature
+    public class MapFeature
     {
-        readonly Placemark _placemark;
+        public Placemark Placemark { get; private set; }
 
         public int Id;
-        public string Name {get { return _placemark.Name ?? Id.ToString(); }}
+        public string Name {get { return Placemark.Name ?? Id.ToString(); }}
         public Vector[] Coordinates { get; private set; }
         public Vector[][] InnerCoordinates { get; private set; }
         public Dictionary<string, string> Data = new Dictionary<string, string>();
+        private Kml2SqlConfig _configuration;
 
         public ShapeType ShapeType { get; private set; }
 
-        public MapFeature(Placemark placemark, int id)
+        internal MapFeature(Placemark placemark, int id, Kml2SqlConfig config)
         {
-            _placemark = placemark;
+            Placemark = placemark;
             Id = id;
             SetGeoTypes(placemark);
             InitializeCoordinates(placemark);
             InitializeData(placemark);
+            _configuration = config;
         }
 
         private void SetGeoTypes(Placemark placemark)
@@ -146,6 +149,21 @@ namespace Kml2Sql.MsSql
         public override string ToString()
         {
             return Name + " " + Id + " - " + ShapeType;
+        }
+
+        public SqlCommand GetSqlCommand()
+        {
+            return MapFeatureCommandCreator.CreateCommand(this, _configuration);
+        }
+
+        internal string GetInsertQuery(bool declareVariables = true)
+        {
+            return MapFeatureCommandCreator.CreateCommandQuery(this, _configuration, false, declareVariables);
+        }
+
+        public string GetInsertQuery()
+        {
+            return MapFeatureCommandCreator.CreateCommandQuery(this, _configuration, false, true);
         }
     }
 }

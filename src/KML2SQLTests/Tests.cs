@@ -10,6 +10,7 @@ using System.Text;
 using System.Configuration;
 using Kml2Sql.MsSql;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace KML2SQLTests
 {
@@ -22,7 +23,6 @@ namespace KML2SQLTests
         //
         //===================================================================================================
 
-        Kml2SqlConfig myUploader;
         string tableName = "Kml2SqlTest";
         string connectionString;
 
@@ -30,68 +30,85 @@ namespace KML2SQLTests
         public void InitializeTests()
         {
             connectionString = ConfigurationManager.ConnectionStrings["TestDb"].ToString();
-            myUploader = new MapUploader(connectionString);
         }
 
-        [TestMethod]
-        public void CheckNPANew()
+        private void Upload(string fileName, string tableName, PolygonType geoType)
         {
-            using (var conn = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var config = new Kml2SqlConfig();
-                config.MapColumnName("p1", "foo");
-                config.MapColumnName("p2", "bar");
-                Uploader.DropTable(conn, config.TableName);
-                Uploader.Upload(@"TestData\npa.kml", conn, config);
+                connection.Open();
+                var config = new Kml2SqlConfig()
+                {
+                    GeoType = geoType,
+                    TableName = tableName
+                };                
+                var uploader = new Uploader(fileName, config);
+                uploader.Upload(connection);
             }
+                
         }
 
         [TestMethod]
         public void CheckNPA()
         {
-            myUploader.Upload("polygon", @"TestData\npa.kml", tableName + "NPA", 4326, GeoType.Geography);
+            Upload(@"TestData\npa.kml", tableName + "NPA", PolygonType.Geography);
+        }
+
+        [TestMethod]
+        public void TestGetScript()
+        {
+            using (var stream = File.OpenRead(@"TestData\npa.kml"))
+            {
+                var mapper = new Mapper(stream);
+                mapper.Configuration.TableName = tableName + "NPA";
+                mapper.Configuration.GeoType = PolygonType.Geography;
+                var places = mapper.GetMapFeatures();
+                var query = places.First().GetInsertQuery();
+                Assert.IsNotNull(query);
+                Assert.IsTrue(query.Length > 0);
+            }
         }
 
         [TestMethod]
         public void BasicKML()
         {
-            myUploader.Upload( "polygon", @"TestData\Basic.kml", tableName + "Basic", 4326, GeoType.Geography);
+            Upload( @"TestData\Basic.kml", tableName + "Basic", PolygonType.Geography);
         }
 
         [TestMethod]
         public void BasicKMLGeometry()
         {
-            myUploader.Upload("polygon", @"TestData\Basic.kml", tableName + "BasicGeom", 4326, GeoType.Geometry);
+            Upload(@"TestData\Basic.kml", tableName + "BasicGeom", PolygonType.Geometry);
         }
 
         [TestMethod]
         public void CheckNPAGeometry()
         {
-            myUploader.Upload("polygon", @"TestData\npa.kml", tableName + "NPAGeom", 4326, GeoType.Geometry);
+            Upload(@"TestData\npa.kml", tableName + "NPAGeom", PolygonType.Geometry);
         }
 
         [TestMethod]
         public void SchoolTest()
         {
-            myUploader.Upload( "polygon", @"TestData\school.kml", tableName + "School", 4326, GeoType.Geography);
+            Upload( @"TestData\school.kml", tableName + "School", PolygonType.Geography);
         }
 
         [TestMethod]
         public void SchoolTestGeometry()
         {
-            myUploader.Upload("polygon", @"TestData\school.kml", tableName + "SchoolGeom", 4326, GeoType.Geometry);
+            Upload(@"TestData\school.kml", tableName + "SchoolGeom", PolygonType.Geometry);
         }
 
         [TestMethod]
         public void GoogleSample()
         {
-            myUploader.Upload("polygon", @"TestData\KML_Samples.kml", tableName + "Google", 4326, GeoType.Geometry);
+            Upload(@"TestData\KML_Samples.kml", tableName + "Google", PolygonType.Geometry);
         }
 
         //[TestMethod]
         //public void UsZips()
         //{
-        //    myUploader.Upload("polygon", @"TestData\us_zips.kml", tableName + "Zips", 4326, GeoType.Geometry, true);
+        //    myUploader.Upload(@"TestData\us_zips.kml", tableName + "Zips", 4326, GeoType.Geometry, true);
         //}
 
         //[TestMethod]
