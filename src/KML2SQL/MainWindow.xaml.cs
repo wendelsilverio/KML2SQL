@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
 using System.Diagnostics;
-using Kml2Sql.MsSql;
+using Kml2Sql.Mapping;
 
 namespace KML2SQL
 {

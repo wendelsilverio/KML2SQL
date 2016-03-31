@@ -8,7 +8,7 @@ using SharpKml.Dom;
 using SharpKml.Engine;
 using System.IO;
 
-namespace Kml2Sql.MsSql
+namespace Kml2Sql.Mapping
 {
     static class KMLParser
     {

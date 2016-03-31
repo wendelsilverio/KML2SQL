@@ -8,7 +8,7 @@ using SharpKml.Engine;
 using System.Diagnostics;
 using System.Text;
 using System.Configuration;
-using Kml2Sql.MsSql;
+using Kml2Sql.Mapping;
 using System.Data.SqlClient;
 using System.Linq;
 

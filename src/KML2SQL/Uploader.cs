@@ -1,4 +1,4 @@
-﻿using Kml2Sql.MsSql;
+﻿using Kml2Sql.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

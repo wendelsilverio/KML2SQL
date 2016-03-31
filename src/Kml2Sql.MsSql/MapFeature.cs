@@ -9,7 +9,7 @@ using SharpKml.Dom;
 using SharpKml.Engine;
 using System.Data.SqlClient;
 
-namespace Kml2Sql.MsSql
+namespace Kml2Sql.Mapping
 {
     public class MapFeature
     {

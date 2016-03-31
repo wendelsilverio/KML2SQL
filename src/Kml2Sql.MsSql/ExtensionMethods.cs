@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kml2Sql.MsSql
+namespace Kml2Sql.Mapping
 {
     public static class ExtensionMethods
     {

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KML2SQLTests", "KML2SQLTest
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "KML2SQL.Installer", "KML2SQL.Installer\KML2SQL.Installer.vdproj", "{5BEFFE09-C2E7-46D5-8D73-9EB173A60199}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kml2Sql.MsSql", "Kml2Sql.MsSql\Kml2Sql.MsSql.csproj", "{9113D27B-5925-4C1D-87C5-7CF9BDDFD5D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kml2Sql.Mapping", "Kml2Sql.MsSql\Kml2Sql.Mapping.csproj", "{9113D27B-5925-4C1D-87C5-7CF9BDDFD5D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

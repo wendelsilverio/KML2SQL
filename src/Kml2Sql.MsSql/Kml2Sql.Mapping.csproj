@@ -7,8 +7,8 @@
     <ProjectGuid>{9113D27B-5925-4C1D-87C5-7CF9BDDFD5D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kml2Sql.MsSql</RootNamespace>
-    <AssemblyName>Kml2Sql.MsSql</AssemblyName>
+    <RootNamespace>Kml2Sql.Mapping</RootNamespace>
+    <AssemblyName>Kml2Sql.Mapping</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

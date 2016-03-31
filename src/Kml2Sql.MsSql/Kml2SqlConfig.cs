@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kml2Sql.MsSql
+namespace Kml2Sql.Mapping
 {
     public class Kml2SqlConfig
     {
