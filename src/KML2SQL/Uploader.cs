@@ -71,7 +71,7 @@ namespace KML2SQL
                 for (var i = 0; i < mapFeatures.Length; i++)
                 {
                     ReportProgress(GetProgressMessage(mapFeatures[i]), GetPercentage(i + 1, mapFeatures.Length));
-                    var sqlCommand = mapFeatures[i].GetSqlCommand();
+                    var sqlCommand = mapFeatures[i].GetInsertCommand();
                     sqlCommand.Connection = connection;
                     sqlCommand.ExecuteNonQuery();
                 }
@@ -126,7 +126,7 @@ namespace KML2SQL
 
         public void DropTable(SqlConnection connection)
         {
-            string dropCommandString = String.Format("DROP TABLE {0};", Mapper.DropTable.TableName);
+            string dropCommandString = String.Format("DROP TABLE {0};", Mapper.Configuration.TableName);
             var dropCommand = new SqlCommand(dropCommandString, connection);
             dropCommand.CommandType = System.Data.CommandType.Text;
             dropCommand.ExecuteNonQuery();    

@@ -11,18 +11,49 @@ using System.Data.SqlClient;
 
 namespace Kml2Sql.Mapping
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MapFeature
     {
+        #region Properties
+        /// <summary>
+        /// Original SharpKML representation of placemark.
+        /// </summary>
         public Placemark Placemark { get; private set; }
 
-        public int Id;
-        public string Name {get { return Placemark.Name ?? Id.ToString(); }}
-        public Vector[] Coordinates { get; private set; }
-        public Vector[][] InnerCoordinates { get; private set; }
-        public Dictionary<string, string> Data = new Dictionary<string, string>();
-        private Kml2SqlConfig _configuration;
+        /// <summary>
+        /// Sql Id
+        /// </summary>
+        public int Id { get; private set; }
 
+        /// <summary>
+        /// Placemar Name property, or else Id
+        /// </summary>
+        public string Name {get { return Placemark.Name ?? Id.ToString(); }}
+
+        /// <summary>
+        /// Coordinates of polygon, point, or string.
+        /// </summary>
+        public Vector[] Coordinates { get; private set; }
+
+        /// <summary>
+        /// Inner coordinates, if any. Only used for Polygons.
+        /// </summary>
+        public Vector[][] InnerCoordinates { get; private set; }
+
+        /// <summary>
+        /// Additinal Placemark data that will be entered into SQL.
+        /// </summary>
+        public Dictionary<string, string> Data { get; private set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Type of Placemark shape.
+        /// </summary>
         public ShapeType ShapeType { get; private set; }
+        #endregion
+
+        private Kml2SqlConfig _configuration;
 
         internal MapFeature(Placemark placemark, int id, Kml2SqlConfig config)
         {
@@ -136,7 +167,7 @@ namespace Kml2Sql.Mapping
             return coordinates.Select(c => c.ToArray()).ToArray();
         }
 
-        public void ReverseRingOrientation()
+        internal void ReverseRingOrientation()
         {
             List<Vector> reversedCoordinates = new List<Vector>();
             for (int i = Coordinates.Length - 1; i >= 0; i--)
@@ -151,16 +182,26 @@ namespace Kml2Sql.Mapping
             return Name + " " + Id + " - " + ShapeType;
         }
 
-        public SqlCommand GetSqlCommand()
+        /// <summary>
+        /// Create a SqlCommand that, when executed, will insert this object into SQL.
+        /// </summary>
+        /// <returns>SqlCommand</returns>
+        public SqlCommand GetInsertCommand()
         {
             return MapFeatureCommandCreator.CreateCommand(this, _configuration);
         }
+
 
         internal string GetInsertQuery(bool declareVariables = true)
         {
             return MapFeatureCommandCreator.CreateCommandQuery(this, _configuration, false, declareVariables);
         }
 
+        /// <summary>
+        /// Get an insert statement that, when exectued, will insert this object into SQL. Can be used
+        /// when saving text files of SQL Commands, but should be careful as commands will not be parameterized.
+        /// </summary>
+        /// <returns>Insert Query</returns>
         public string GetInsertQuery()
         {
             return MapFeatureCommandCreator.CreateCommandQuery(this, _configuration, false, true);

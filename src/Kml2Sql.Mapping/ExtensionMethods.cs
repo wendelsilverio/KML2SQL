@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Kml2Sql.Mapping
 {
-    public static class ExtensionMethods
+    internal static class ExtensionMethods
     {
-        public static string Sanitize(this string myString)
+        internal static string Sanitize(this string myString)
         {
             return myString.Replace("--", "").Replace(";", "").Replace("'", "\"");
         }

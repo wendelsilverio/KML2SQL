@@ -10,7 +10,7 @@ using System.IO;
 
 namespace Kml2Sql.Mapping
 {
-    static class KMLParser
+    internal static class KMLParser
     {
         public static Kml Parse(string filePath)
         {
@@ -21,7 +21,7 @@ namespace Kml2Sql.Mapping
                 
         }
 
-        public static Kml Parse(Stream fileStream)
+        internal static Kml Parse(Stream fileStream)
         {
             KmlFile file = KmlFile.Load(fileStream);
             Kml kml = file.Root as Kml;

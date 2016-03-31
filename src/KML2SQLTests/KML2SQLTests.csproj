@@ -82,6 +82,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kml2Sql.Mapping\Kml2Sql.Mapping.csproj">
+      <Project>{9113d27b-5925-4c1d-87c5-7cf9bddfd5d2}</Project>
+      <Name>Kml2Sql.Mapping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KML2SQL\KML2SQL.csproj">
       <Project>{9fffe8ad-a2a6-4ff6-afa4-52d543c9c5c0}</Project>
       <Name>KML2SQL</Name>

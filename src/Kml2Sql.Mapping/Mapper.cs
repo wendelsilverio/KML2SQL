@@ -10,16 +10,22 @@ using System.Text;
 
 namespace Kml2Sql.Mapping
 {
+    /// <summary>
+    /// Builds SQL queries for inserting KML files into SQL.
+    /// </summary>
     public class Mapper
     {
-        public Kml2SqlConfig DropTable { get; private set; } = new Kml2SqlConfig();
+        /// <summary>
+        /// Configuration settings for the Mapper.
+        /// </summary>
+        public Kml2SqlConfig Configuration { get; private set; } = new Kml2SqlConfig();
         private IEnumerable<MapFeature> _mapFeatures;
 
         public Mapper(Stream fileStream, Kml2SqlConfig configuration) : this(fileStream)
         {
             if (configuration != null)
             {
-                DropTable = configuration;
+                Configuration = configuration;
             }           
         }
 
@@ -37,18 +43,29 @@ namespace Kml2Sql.Mapping
 
                 if (HasValidElement(placemark))
                 {
-                    MapFeature mapFeature = new MapFeature(placemark, id, DropTable);
+                    MapFeature mapFeature = new MapFeature(placemark, id, Configuration);
                     yield return mapFeature;
                 }
                 id++;
             }
         }
 
+        /// <summary>
+        /// Get an Enumerable set of MapFeature objects
+        /// </summary>
+        /// <returns>Enumerable collection of MapFeature objects</returns>
         public IEnumerable<MapFeature> GetMapFeatures()
         {
             return _mapFeatures;
         }
 
+        /// <summary>
+        /// Get SQLCommand that will create a table for MapFeature objects. Column names are based on
+        /// Placemark data and Configuratiohn settings.
+        /// </summary>
+        /// <param name="connection">The SqlConnection</param>
+        /// <param name="transaction">Any sql Transactions</param>
+        /// <returns>A SqlCommand</returns>
         public SqlCommand GetCreateTableCommand(SqlConnection connection, SqlTransaction transaction = null)
         {
             var command = GetCreateTableCommand();
@@ -57,6 +74,11 @@ namespace Kml2Sql.Mapping
             return command;
         }
 
+        /// <summary>
+        /// Get SQLCommand that will create a table for MapFeature objects. Column names are based on
+        /// Placemark data and Configuratiohn settings.
+        /// </summary>
+        /// <returns>A SqlCommand</returns>
         public SqlCommand GetCreateTableCommand()
         {
             var commandText = GetCreateTableScript();
@@ -65,6 +87,10 @@ namespace Kml2Sql.Mapping
             return command;
         }
 
+        /// <summary>
+        /// Get combination of all Mapfeature inserts.
+        /// </summary>
+        /// <returns>string</returns>
         public string GetCombinedInsertCommands()
         {
             var sb = new StringBuilder();
@@ -78,16 +104,21 @@ namespace Kml2Sql.Mapping
         }
 
 
+        /// <summary>
+        /// Get SQL query that will create a table for MapFeature objects. Column names are based on
+        /// Placemark data and Configuratiohn settings.
+        /// </summary>
+        /// <returns>SQL Script</returns>
         public string GetCreateTableScript()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(String.Format("CREATE TABLE [{0}] (", DropTable.TableName));
-            sb.Append($"[{DropTable.IdColumnName}] INT NOT NULL PRIMARY KEY,");
-            foreach (var columnName in GetColumnNames().Select(DropTable.GetColumnName))
+            sb.Append(String.Format("CREATE TABLE [{0}] (", Configuration.TableName));
+            sb.Append($"[{Configuration.IdColumnName}] INT NOT NULL PRIMARY KEY,");
+            foreach (var columnName in GetColumnNames().Select(Configuration.GetColumnName))
             {
                 sb.Append(String.Format("[{0}] VARCHAR(max), ", columnName));
             }
-            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", DropTable.PlacemarkColumnName, DropTable.GeoType));
+            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", Configuration.PlacemarkColumnName, Configuration.GeoType));
             return sb.ToString();
         }
 
