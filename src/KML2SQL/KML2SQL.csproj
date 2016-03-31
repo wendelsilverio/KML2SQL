@@ -175,12 +175,6 @@
   <ItemGroup>
     <Resource Include="vector_earth_planet.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kml2Sql.MsSql\Kml2Sql.Mapping.csproj">
-      <Project>{9113d27b-5925-4c1d-87c5-7cf9bddfd5d2}</Project>
-      <Name>Kml2Sql.Mapping</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
