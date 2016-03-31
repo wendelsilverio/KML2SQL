@@ -15,20 +15,8 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_2C9C19BC9CE7406A9C3B9ED39BDF3754"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_77FDA0E85361DADF3AC2A77267A2D980"
+        "MsmKey" = "8:_3DFF95CA2DFD3D8E5CBE1D5135833171"
         "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_77FDA0E85361DADF3AC2A77267A2D980"
-        "OwnerKey" = "8:_A72658E13C2E29FF5594E6F3AAEE73C4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -39,13 +27,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A72658E13C2E29FF5594E6F3AAEE73C4"
-        "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
+        "MsmKey" = "8:_999323C1795D4077ACC75D2D52AB83F8"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CDA59B12DE40DFA0A83F7AC7D4472A27"
+        "MsmKey" = "8:_A4433CC1092B83398B03E0B1E33EF8C5"
+        "OwnerKey" = "8:_E4C87432ACDB002EB2B089F63F06BD32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A4433CC1092B83398B03E0B1E33EF8C5"
         "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -57,6 +51,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E43CEDAB6F3393EC85AA7B441A8F0CD2"
+        "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E4C87432ACDB002EB2B089F63F06BD32"
+        "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F780106F49ABDB39C1068A501EB7E1F6"
+        "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_81640DF6DE9C517AB1DE829027E9E9F0"
         "MsmSig" = "8:_UNDEFINED"
@@ -64,25 +76,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CDA59B12DE40DFA0A83F7AC7D4472A27"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_77FDA0E85361DADF3AC2A77267A2D980"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A72658E13C2E29FF5594E6F3AAEE73C4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3DFF95CA2DFD3D8E5CBE1D5135833171"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F780106F49ABDB39C1068A501EB7E1F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E4C87432ACDB002EB2B089F63F06BD32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A4433CC1092B83398B03E0B1E33EF8C5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E43CEDAB6F3393EC85AA7B441A8F0CD2"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -180,35 +204,20 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C9C19BC9CE7406A9C3B9ED39BDF3754"
-            {
-            "SourcePath" = "8:..\\vector_earth_planet.ico"
-            "TargetName" = "8:vector_earth_planet.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_77FDA0E85361DADF3AC2A77267A2D980"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3DFF95CA2DFD3D8E5CBE1D5135833171"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Semver, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_3DFF95CA2DFD3D8E5CBE1D5135833171"
+                    {
+                    "Name" = "8:Semver.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:Ionic.Zip.Reduced.dll"
+            "SourcePath" = "8:Semver.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
@@ -257,13 +266,38 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A72658E13C2E29FF5594E6F3AAEE73C4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_999323C1795D4077ACC75D2D52AB83F8"
+            {
+            "SourcePath" = "8:..\\..\\vector_earth_planet.ico"
+            "TargetName" = "8:vector_earth_planet.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A4433CC1092B83398B03E0B1E33EF8C5"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SharpKml, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SharpKml, Version=2.1.1.0, Culture=neutral, PublicKeyToken=9bb853c026a5c0ac, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_A4433CC1092B83398B03E0B1E33EF8C5"
+                    {
+                    "Name" = "8:SharpKml.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:SharpKml.dll"
             "TargetName" = "8:"
@@ -283,13 +317,80 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CDA59B12DE40DFA0A83F7AC7D4472A27"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E43CEDAB6F3393EC85AA7B441A8F0CD2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_E43CEDAB6F3393EC85AA7B441A8F0CD2"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E4C87432ACDB002EB2B089F63F06BD32"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Kml2Sql.Mapping, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E4C87432ACDB002EB2B089F63F06BD32"
+                    {
+                    "Name" = "8:Kml2Sql.Mapping.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Kml2Sql.Mapping.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F780106F49ABDB39C1068A501EB7E1F6"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_F780106F49ABDB39C1068A501EB7E1F6"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -365,15 +466,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:KML2SQL"
-        "ProductCode" = "8:{B53302B1-5395-4F34-8C37-B0F4F7A81F0C}"
-        "PackageCode" = "8:{AFFF6D0A-36D6-4B27-89DA-D8999D869C28}"
+        "ProductCode" = "8:{2FCC652D-6358-4702-BF4A-498C9C7F1A69}"
+        "PackageCode" = "8:{694BC57C-23A7-4E1D-A100-4D1D6EAE5045}"
         "UpgradeCode" = "8:{7C61ECAB-33CB-4530-9F76-FF895F3BC054}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.4.2"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:Pharylon"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -497,7 +598,7 @@
             "Target" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
             "Folder" = "8:_1B038F25DB8F4742ACB322213E386DB4"
             "WorkingFolder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
-            "Icon" = "8:_2C9C19BC9CE7406A9C3B9ED39BDF3754"
+            "Icon" = "8:_999323C1795D4077ACC75D2D52AB83F8"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2680730D68CC454EA065208980AA963C"
@@ -511,7 +612,7 @@
             "Target" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
             "Folder" = "8:_3D67B6D4BB414A0DA0A59BC11B03A3BD"
             "WorkingFolder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
-            "Icon" = "8:_2C9C19BC9CE7406A9C3B9ED39BDF3754"
+            "Icon" = "8:_999323C1795D4077ACC75D2D52AB83F8"
             "Feature" = "8:"
             }
         }

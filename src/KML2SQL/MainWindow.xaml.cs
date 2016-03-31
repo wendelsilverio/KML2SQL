@@ -17,6 +17,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Diagnostics;
 using Kml2Sql.Mapping;
+using KML2SQL.Updates;
 
 namespace KML2SQL
 {
@@ -34,6 +35,7 @@ namespace KML2SQL
             if (!Directory.Exists(Utility.GetApplicationFolder()))
                 Directory.CreateDirectory(Utility.GetApplicationFolder());
             RestoreSettings();
+            Task.Run(UpdateChecker.CheckForNewVersion);
         }
 
         private void serverNameBox_GotFocus(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using KML2SQL.Updates;
 
 namespace KML2SQL
 {
@@ -17,5 +18,6 @@ namespace KML2SQL
         public string SRID { get; set; }
         public bool UseIntegratedSecurity { get; set; }
         public bool FixBrokenPolygons { get; set; }
+        public UpdateInfo UpdateInfo { get; set; }
     }
 }
