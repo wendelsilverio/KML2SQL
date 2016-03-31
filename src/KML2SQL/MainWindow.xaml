@@ -4,49 +4,53 @@
         ResizeMode="NoResize"
         Title="KML2SQL" Height="409.942" Width="542">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="98*"/>
-            <ColumnDefinition Width="419*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="KML File:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="KMLFileLocationBox" HorizontalAlignment="Left" Height="23" Margin="72,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" Text="C:\..." GotFocus="KMLFileLocationBox_GotFocus" Grid.ColumnSpan="2"/>
-        <Button Content="..." HorizontalAlignment="Left" Margin="334,14,0,0" VerticalAlignment="Top" Width="35" Click="Button_Click" Grid.Column="1"/>
-        <TextBox x:Name="databaseNameBox" HorizontalAlignment="Left" Height="23" Margin="228.4,202,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" GotFocus="databaseNameBox_GotFocus" Grid.Column="1"/>
-        <TextBox x:Name="tableBox" HorizontalAlignment="Left" Height="23" Margin="228.4,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" Text="myTable" GotFocus="tableBox_GotFocus" Grid.Column="1"/>
-        <TextBox x:Name="columnNameBox" HorizontalAlignment="Left" Height="23" Margin="228.4,260,0,0" TextWrapping="Wrap" Text="placemark" VerticalAlignment="Top" Width="141" GotFocus="columnNameBox_GotFocus" Grid.Column="1"/>
-        <ListBox HorizontalAlignment="Left" Height="53" Margin="10,220,0,0" VerticalAlignment="Top" Width="146" Grid.ColumnSpan="2">
+        <Label Content="KML File:" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" FontSize="13.333" FontWeight="Bold" RenderTransformOrigin="0.48,0.211"/>
+        <TextBox x:Name="KMLFileLocationBox" HorizontalAlignment="Left" Height="23" Margin="82,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" Text="C:\..." GotFocus="KMLFileLocationBox_GotFocus"/>
+        <Button Content="..." HorizontalAlignment="Left" Margin="438,25,0,0" VerticalAlignment="Top" Width="35" Click="Button_Click"/>
+        <TextBox x:Name="databaseNameBox" HorizontalAlignment="Left" Height="23" Margin="120,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" GotFocus="databaseNameBox_GotFocus"/>
+        <TextBox x:Name="tableBox" HorizontalAlignment="Left" Height="23" Margin="120,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" Text="myTable" GotFocus="tableBox_GotFocus" RenderTransformOrigin="-1.356,0.288"/>
+        <TextBox x:Name="columnNameBox" HorizontalAlignment="Left" Height="23" Margin="120,276,0,0" TextWrapping="Wrap" Text="placemark" VerticalAlignment="Top" Width="141" GotFocus="columnNameBox_GotFocus"/>
+        <ListBox HorizontalAlignment="Left" Height="53" Margin="301,75,0,0" VerticalAlignment="Top" Width="146">
             <RadioButton x:Name="geometryMode" Content="Geometry Mode" IsChecked="True" Checked="geometryMode_Checked"/>
             <Label Content="" RenderTransformOrigin="0.816,-0.538" Height="10"/>
             <RadioButton x:Name="geographyMode" Content="Geography Mode" Checked="geographyMode_Checked"/>
         </ListBox>
-        <CheckBox x:Name="sridCheckBox" Content="Set SRID" HorizontalAlignment="Left" Margin="10,287,0,0" VerticalAlignment="Top" Checked="sridCheckBox_Checked" Unchecked="sridCheckBox_Unchecked" IsEnabled="False"/>
-        <TextBox x:Name="sridBox" HorizontalAlignment="Left" Height="23" Margin="72,285,0,0" TextWrapping="Wrap" Text="NA" VerticalAlignment="Top" Width="47" IsEnabled="False" RenderTransformOrigin="0.702,1.696" Grid.ColumnSpan="2"/>
-        <Label Content="Table Name:" HorizontalAlignment="Left" Margin="97.4,230,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <Label Content="Shape Column Name:" HorizontalAlignment="Left" Margin="102.4,257,0,0" VerticalAlignment="Top" Width="126" Grid.Column="1"/>
-        <Button x:Name="CreateDatabaseButton" Content="Start" HorizontalAlignment="Left" Margin="245.4,352,0,0" VerticalAlignment="Top" Width="179" Click="CreateDatabaseButton_Click" Grid.Column="1"/>
-        <Label x:Name="databaseNameLabel" Content="Database Name:" HorizontalAlignment="Left" Margin="97.4,201,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.184,0.615" Width="97" Grid.Column="1"/>
-        <Label x:Name="About" Content="?" Grid.Column="1" HorizontalAlignment="Left" Margin="383,3,0,0" VerticalAlignment="Top" Opacity="0.25" FontSize="20" FontWeight="Bold" MouseEnter="About_MouseEnter" MouseLeave="About_MouseLeave" MouseDown="About_MouseDown"/>
+        <CheckBox x:Name="sridCheckBox" Content="Set SRID" HorizontalAlignment="Left" Margin="301,140,0,0" VerticalAlignment="Top" Checked="sridCheckBox_Checked" Unchecked="sridCheckBox_Unchecked" IsEnabled="False"/>
+        <TextBox x:Name="sridBox" HorizontalAlignment="Left" Height="23" Margin="377,137,0,0" TextWrapping="Wrap" Text="NA" VerticalAlignment="Top" Width="47" IsEnabled="False" RenderTransformOrigin="0.702,1.696"/>
+        <Label Content="Table Name:" HorizontalAlignment="Left" Margin="10,248,0,0" VerticalAlignment="Top"/>
+        <Label Content="Shape Column Name:" HorizontalAlignment="Left" Margin="10,275,0,0" VerticalAlignment="Top" Width="126"/>
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="17" Margin="347,352,0,0" VerticalAlignment="Top" Width="179">
+        </ProgressBar>
+        <Button Content="Start" x:Name="CreateDatabaseButton" HorizontalAlignment="Left" Margin="347,352,0,0" VerticalAlignment="Top" Width="179" Click="CreateDatabaseButton_Click">
+        </Button>
+        <Label x:Name="databaseNameLabel" Content="Database Name:" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.184,0.615" Width="97"/>
+        <Label x:Name="About" Content="?" HorizontalAlignment="Left" Margin="507,-2,0,0" VerticalAlignment="Top" Opacity="0.25" FontSize="20" FontWeight="Bold" MouseEnter="About_MouseEnter" MouseLeave="About_MouseLeave" MouseDown="About_MouseDown"/>
         <Button Content="View Log" HorizontalAlignment="Left" Margin="10,352,0,0" VerticalAlignment="Top" Width="75" Click="Log_Click" RenderTransformOrigin="0.546,2.953"/>
-        <CheckBox x:Name="fixBrokenPolygons" Content="Fix Broken Polygons" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="14" Width="114"/>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="437" Margin="10,36,0,0" Grid.ColumnSpan="2">
+        <CheckBox x:Name="fixBrokenPolygons" Content="Fix Broken Polygons" HorizontalAlignment="Left" Margin="301,165,0,0" VerticalAlignment="Top" Height="14" Width="114"/>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="160" VerticalAlignment="Top" Width="286" Margin="10,56,0,0">
             <TabItem Header="Upload To Server">
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="Server Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="83"/>
-                    <TextBox x:Name="serverNameBox" HorizontalAlignment="Left" Height="23" Margin="81,12,0,0" TextWrapping="Wrap" Text="foo.myserver.com" VerticalAlignment="Top" Width="336" GotFocus="serverNameBox_GotFocus"/>
-                    <Label Content="Login:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="83"/>
-                    <TextBox x:Name="userNameBox" HorizontalAlignment="Left" Height="23" Margin="81,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="336" GotFocus="userNameBox_GotFocus"/>
-                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
-                    <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="81,76,0,0" VerticalAlignment="Top" Width="336" GotFocus="passwordBox_GotFocus"/>
-                    <CheckBox x:Name="integratedSecurityCheckbox" Content="Use Integrated Security (Windows Credentials)" Margin="10,100,152.2,-0.4" VerticalAlignment="Top" Checked="IntegratedSecurityCheckbox_Checked" Unchecked="IntegratedSecurityCheckbox_Checked" />
-                    <TextBlock x:Name="resultTextBox" Text="Note: Existing Tables will be overwritten." HorizontalAlignment="Left" Margin="27,118,0,-8.8" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="293"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="17*"/>
+                        <ColumnDefinition Width="213*"/>
+                        <ColumnDefinition Width="47*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Server Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="83" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="serverNameBox" HorizontalAlignment="Left" Height="23" Margin="63.2,12,0,0" TextWrapping="Wrap" Text="foo.myserver.com" VerticalAlignment="Top" Width="186" GotFocus="serverNameBox_GotFocus" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Label Content="Login:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="83" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="userNameBox" HorizontalAlignment="Left" Height="23" Margin="63.2,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" GotFocus="userNameBox_GotFocus" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="63.2,76,0,0" VerticalAlignment="Top" Width="186" GotFocus="passwordBox_GotFocus" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="integratedSecurityCheckbox" Content="Use Integrated Security (Windows Credentials)" Margin="10,100,9.8,0" VerticalAlignment="Top" Checked="IntegratedSecurityCheckbox_Checked" Unchecked="IntegratedSecurityCheckbox_Checked" Height="21" Grid.ColumnSpan="3" />
                 </Grid>
             </TabItem>
             <TabItem Header="Create SQL Script">
                 <Grid Background="#FFE5E5E5">
                     <Label x:Name="label" Content="Save Script To:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="76"/>
-                    <TextBox x:Name="saveScriptTo" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="C:\KmlScript.sql" VerticalAlignment="Top" Width="382" Margin="10,34,0,0"/>
+                    <TextBox x:Name="saveScriptTo" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="C:\KmlScript.sql" VerticalAlignment="Top" Width="257" Margin="10,34,0,0"/>
                 </Grid>
             </TabItem>
         </TabControl>
+        <CheckBox x:Name="dropExisting" Content="Drop Existing Table" HorizontalAlignment="Left" Margin="301,184,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

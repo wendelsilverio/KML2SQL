@@ -12,14 +12,14 @@ namespace Kml2Sql.MsSql
 {
     public class Mapper
     {
-        public Kml2SqlConfig Configuration { get; private set; } = new Kml2SqlConfig();
+        public Kml2SqlConfig DropTable { get; private set; } = new Kml2SqlConfig();
         private IEnumerable<MapFeature> _mapFeatures;
 
         public Mapper(Stream fileStream, Kml2SqlConfig configuration) : this(fileStream)
         {
             if (configuration != null)
             {
-                Configuration = configuration;
+                DropTable = configuration;
             }           
         }
 
@@ -37,7 +37,7 @@ namespace Kml2Sql.MsSql
 
                 if (HasValidElement(placemark))
                 {
-                    MapFeature mapFeature = new MapFeature(placemark, id, Configuration);
+                    MapFeature mapFeature = new MapFeature(placemark, id, DropTable);
                     yield return mapFeature;
                 }
                 id++;
@@ -81,13 +81,13 @@ namespace Kml2Sql.MsSql
         public string GetCreateTableScript()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(String.Format("CREATE TABLE [{0}] (", Configuration.TableName));
-            sb.Append($"[{Configuration.IdColumnName}] INT NOT NULL PRIMARY KEY,");
-            foreach (var columnName in GetColumnNames().Select(Configuration.GetColumnName))
+            sb.Append(String.Format("CREATE TABLE [{0}] (", DropTable.TableName));
+            sb.Append($"[{DropTable.IdColumnName}] INT NOT NULL PRIMARY KEY,");
+            foreach (var columnName in GetColumnNames().Select(DropTable.GetColumnName))
             {
                 sb.Append(String.Format("[{0}] VARCHAR(max), ", columnName));
             }
-            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", Configuration.PlacemarkColumnName, Configuration.GeoType));
+            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", DropTable.PlacemarkColumnName, DropTable.GeoType));
             return sb.ToString();
         }
 

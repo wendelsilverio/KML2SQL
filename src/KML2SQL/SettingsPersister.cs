@@ -2,25 +2,27 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace KML2SQL
 {
-    class SettingsPersister
+    static class SettingsPersister
     {
-        private static string FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "KML2SQL.settings");
+        private static string FileName = Path.Combine(Utility.GetApplicationFolder(), "KML2SQL.settings");
 
-        public void Persist(Settings settings)
+        public static void Persist(Settings settings)
         {
             var settingsText = Newtonsoft.Json.JsonConvert.SerializeObject(settings);
             File.WriteAllText(FileName, settingsText);
         }
-        public Settings Retrieve()
+        public static Settings Retrieve()
         {
 
             if (File.Exists(FileName))
             {
                 var settingsText = File.ReadAllText(FileName);
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<Settings>(settingsText);
+                var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<Settings>(settingsText);
+                return settings;
             }
             return null;
         }

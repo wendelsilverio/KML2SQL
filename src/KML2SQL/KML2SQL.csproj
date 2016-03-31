@@ -98,9 +98,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logger.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsPersister.cs" />
     <Compile Include="Uploader.cs" />
+    <Compile Include="Utility.cs" />
     <Page Include="About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

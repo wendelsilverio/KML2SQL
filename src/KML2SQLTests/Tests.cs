@@ -43,7 +43,7 @@ namespace KML2SQLTests
                     TableName = tableName
                 };                
                 var uploader = new Uploader(fileName, config);
-                uploader.Upload(connection);
+                uploader.Upload(connection, true);
             }
                 
         }
@@ -60,8 +60,8 @@ namespace KML2SQLTests
             using (var stream = File.OpenRead(@"TestData\npa.kml"))
             {
                 var mapper = new Mapper(stream);
-                mapper.Configuration.TableName = tableName + "NPA";
-                mapper.Configuration.GeoType = PolygonType.Geography;
+                mapper.DropTable.TableName = tableName + "NPA";
+                mapper.DropTable.GeoType = PolygonType.Geography;
                 var places = mapper.GetMapFeatures();
                 var query = places.First().GetInsertQuery();
                 Assert.IsNotNull(query);

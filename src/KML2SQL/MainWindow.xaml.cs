@@ -28,20 +28,12 @@ namespace KML2SQL
     {
         Kml2SqlConfig config;
 
-        readonly string _appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) 
-            + ConfigurationManager.AppSettings["AppFolder"];
-
         public MainWindow()
         {
             InitializeComponent();
-            if (!Directory.Exists(_appFolder))
-                Directory.CreateDirectory(_appFolder);
+            if (!Directory.Exists(Utility.GetApplicationFolder()))
+                Directory.CreateDirectory(Utility.GetApplicationFolder());
             RestoreSettings();
-        }
-
-        private void myUploader_progressUpdate(string text)
-        {
-            resultTextBox.Text = text;
         }
 
         private void serverNameBox_GotFocus(object sender, RoutedEventArgs e)
@@ -98,15 +90,33 @@ namespace KML2SQL
 
         private void UploadFile()
         {
+            var logger = new Logger();
             try
             {
+                CreateDatabaseButton.Visibility = Visibility.Hidden;
                 var connectionString = BuildConnectionString();
                 var config = GetConfig();
-                var progresss = new Progress<int>(UpdateResults);
+                var progresss = new Progress<ProgressReoprt>(p =>
+                {
+                    UpdateProgressBar(p.PercentDone);
+                    logger.AddToLog(p.Message);
+                    if (p.Exception != null)
+                    {
+                        AlertFailure(p.Exception);
+                        logger.AddToLog(p.Exception);
+                        logger.WriteOut();
+                        CreateDatabaseButton.Visibility = Visibility.Visible;                  
+                    }
+                    if (p.PercentDone == 100)
+                    {
+                        logger.WriteOut();
+                    }
+                });
                 var uploader = new Uploader(KMLFileLocationBox.Text, config, progresss);
+                var dropTable = Convert.ToBoolean(dropExisting.IsChecked);
                 if (tabControl.SelectedIndex == 0)
                 {
-                    Task.Run(() => uploader.Upload(connectionString));
+                    Task.Run(() => uploader.Upload(connectionString, dropTable));
                 }
                 else
                 {
@@ -121,24 +131,43 @@ namespace KML2SQL
             }
             catch (Exception ex)
             {
-                MessageBox.Show("The process failed with the following error. See the log for details: \r\n\r\n "
-                    + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                CreateDatabaseButton.Visibility = Visibility.Visible;                
+                logger.AddToLog(ex);
+                AlertFailure(ex);
             }
         }
 
-        public void UpdateResults(int percentage)
+        private void AlertFailure(Exception ex)
         {
-            resultTextBox.Text = percentage + "%";
+            MessageBox.Show("The process failed with the following error. See the log for details: \r\n\r\n "
+                    + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void WriteErrorLog(Exception ex)
+        {
+            var logFileName = "log_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-ffff") + ".txt";
+            var fullPath = System.IO.Path.Combine(Utility.GetApplicationFolder(), logFileName);
+            File.WriteAllText(fullPath, ex.ToString());
+        }
+
+        public void UpdateProgressBar(int percentage)
+        {
+            progressBar.Value = percentage;
+            if (percentage == 100)
+            {
+                CreateDatabaseButton.Visibility = Visibility.Visible;
+                CreateDatabaseButton.Content = "Finished!";
+            }
         }
 
         private Kml2SqlConfig GetConfig()
         {
             config = new Kml2SqlConfig();
             config.GeoType = geographyMode.IsChecked != null && geographyMode.IsChecked.Value ? PolygonType.Geography : PolygonType.Geometry;
-            config.FixPolygons = fixBrokenPolygons.IsChecked != null ? fixBrokenPolygons.IsChecked.Value : false;
             config.Srid = ParseSRID(config.GeoType);
             config.TableName = tableBox.Text;
             config.PlacemarkColumnName = columnNameBox.Text;
+            config.FixPolygons = Convert.ToBoolean(fixBrokenPolygons.IsChecked);
             return config;
         }
 
@@ -156,11 +185,11 @@ namespace KML2SQL
             settings.Geography = geographyMode.IsChecked.Value;
             settings.UseIntegratedSecurity = integratedSecurityCheckbox.IsChecked.Value;
             settings.FixBrokenPolygons = fixBrokenPolygons.IsChecked.Value;
-            new SettingsPersister().Persist(settings);
+            SettingsPersister.Persist(settings);
         }
         private void RestoreSettings()
         {
-            var settings = new SettingsPersister().Retrieve();
+            var settings = SettingsPersister.Retrieve();
             if (settings != null)
             {
                 geographyMode.IsChecked = settings.Geography;
@@ -173,7 +202,7 @@ namespace KML2SQL
                 serverNameBox.Text = settings.ServerName;
                 databaseNameBox.Text = settings.DatabaseName;
                 integratedSecurityCheckbox.IsChecked = settings.UseIntegratedSecurity;
-                integratedSecurityCheckbox.IsChecked = settings.FixBrokenPolygons;
+                fixBrokenPolygons.IsChecked = settings.FixBrokenPolygons;
             }
         }
 
@@ -266,7 +295,7 @@ namespace KML2SQL
 
         private void Log_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(_appFolder);
+            Process.Start(Utility.GetApplicationFolder());
         }
 
         private void IntegratedSecurityCheckbox_Checked(object sender, RoutedEventArgs e)
@@ -282,5 +311,6 @@ namespace KML2SQL
                 passwordBox.IsEnabled = true;
             }
         }
+
     }
 }
