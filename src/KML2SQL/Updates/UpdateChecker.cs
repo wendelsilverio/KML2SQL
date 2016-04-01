@@ -84,7 +84,7 @@ namespace KML2SQL.Updates
             return check;
         }
 
-        private static string GetCurrentVersion()
+        internal static string GetCurrentVersion()
         {
             var attr = Assembly
                 .GetEntryAssembly()
