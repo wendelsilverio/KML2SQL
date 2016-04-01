@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+    <link rel="stylesheet" href="site.css">
+  
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+    <div class="centered">
+        <h3>Thank You for Downloading Kml2Sql</h3>
+        <img class="image-shadow" style="max-width:150px" src="images/vector_earth_planet.ico">
+        <br>
+        <div>
+            Your Download should begin shortly!<br><strong>If it does not, please click <a href="https://github.com/Pharylon/KML2SQL/releases/latest">here</a></strong>
+        </div>
+    </div>
+  <iframe id="my_iframe" style="display:none;"></iframe>
+  <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+        DownloadLatest();
+    });
+
+    function DownloadLatest() {
+        $.getJSON("https://api.github.com/repos/pharylon/kml2sql/releases/latest").done(function (release) {
+            var asset = release.assets[0];
+            document.getElementById('my_iframe').src = asset.browser_download_url;
+        });
+    }
+</script>
+</body>
+</html>
