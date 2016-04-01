@@ -13,7 +13,7 @@ namespace Kml2Sql.Mapping
     /// <summary>
     /// Builds SQL queries for inserting KML files into SQL.
     /// </summary>
-    public class Mapper
+    public class Kml2SqlMapper
     {
         /// <summary>
         /// Configuration settings for the Mapper.
@@ -21,7 +21,7 @@ namespace Kml2Sql.Mapping
         public Kml2SqlConfig Configuration { get; private set; } = new Kml2SqlConfig();
         private IEnumerable<MapFeature> _mapFeatures;
 
-        public Mapper(Stream fileStream, Kml2SqlConfig configuration) : this(fileStream)
+        public Kml2SqlMapper(Stream fileStream, Kml2SqlConfig configuration) : this(fileStream)
         {
             if (configuration != null)
             {
@@ -29,7 +29,7 @@ namespace Kml2Sql.Mapping
             }           
         }
 
-        public Mapper(Stream fileStream)
+        public Kml2SqlMapper(Stream fileStream)
         {
             var kml = KMLParser.Parse(fileStream);
             _mapFeatures = GetMapFeatures(kml);

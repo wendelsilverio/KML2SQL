@@ -59,7 +59,7 @@ namespace KML2SQLTests
         {
             using (var stream = File.OpenRead(@"TestData\npa.kml"))
             {
-                var mapper = new Mapper(stream);
+                var mapper = new Kml2SqlMapper(stream);
                 mapper.Configuration.TableName = tableName + "NPA";
                 mapper.Configuration.GeoType = PolygonType.Geography;
                 var places = mapper.GetMapFeatures();

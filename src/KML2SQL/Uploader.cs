@@ -13,18 +13,18 @@ namespace KML2SQL
     {
         public IProgress<ProgressReoprt> OnProgressChange { get; set; }
 
-        public Mapper Mapper { get; private set; }
+        public Kml2SqlMapper Mapper { get; private set; }
 
         public Uploader(FileStream stream, Kml2SqlConfig configuration)
         {
-            Mapper = new Mapper(stream, configuration);
+            Mapper = new Kml2SqlMapper(stream, configuration);
         }
 
         public Uploader(string filePath, Kml2SqlConfig configuration)
         {
             using (var stream = File.OpenRead(filePath))
             {
-                Mapper = new Mapper(stream, configuration);
+                Mapper = new Kml2SqlMapper(stream, configuration);
             }                
         }
 
@@ -72,18 +72,9 @@ namespace KML2SQL
                 for (var i = 0; i < mapFeatures.Length; i++)
                 {
                     ReportProgress(GetProgressMessage(mapFeatures[i]), GetPercentage(i + 1, mapFeatures.Length));
-                    //try
-                    //{
-                        sqlCommand = mapFeatures[i].GetInsertCommand();
-                        sqlCommand.Connection = connection;
-                        sqlCommand.ExecuteNonQuery();
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ReportProgress("Failed to upload placemark " + mapFeatures[i].Id + "Error was: " + Environment.NewLine + ex,
-                    //        GetPercentage(i + 1, mapFeatures.Length)
-                    //        );
-                    //}                    
+                    sqlCommand = mapFeatures[i].GetInsertCommand();
+                    sqlCommand.Connection = connection;
+                    sqlCommand.ExecuteNonQuery();                
                 }
                 ReportProgress("Done!", 100);
             }
