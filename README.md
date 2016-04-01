@@ -10,7 +10,7 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 ----
 2. For Developers, the backend logic is available as a Nuget Package.
 ----
-3. Either way, the documentation is here.
+3. Either way, [the documentation is here](http://pharylon.github.io/KML2SQL/).
 ----
 
 What's New:
