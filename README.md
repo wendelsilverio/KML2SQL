@@ -8,14 +8,14 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 
 1. For regular people, [Download the Desktop Utility here.](https://github.com/Pharylon/KML2SQL/releases/latest)
 ----
-2. For Developers, the backend logic is available as a Nuget Package.
+2. For Developers, the backend logic is available as [a Nuget Package](https://www.nuget.org/packages/Kml2Sql/).
 ----
 3. Either way, [the documentation is here](http://pharylon.github.io/KML2SQL/).
 ----
 
 What's New:
 -----
-**03/31/2016 - v 2.0.0**
+**03/31/2016 - v 2.0**
 * Better ability to fix broken polygons.
 * Improved UI layout.
 * Polygons can have inner open spaces. Think "donut holes." (*Special thanks to Apathy Dude!*)
