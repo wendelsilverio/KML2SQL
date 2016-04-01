@@ -34,6 +34,7 @@ namespace KML2SQL
             InitializeComponent();
             if (!Directory.Exists(Utility.GetApplicationFolder()))
                 Directory.CreateDirectory(Utility.GetApplicationFolder());
+            saveScriptTo.Text = Utility.GetDefaultScriptSaveLoc();
             RestoreSettings();
             Task.Run(UpdateChecker.CheckForNewVersion);
         }
@@ -114,17 +115,22 @@ namespace KML2SQL
                         logger.WriteOut();
                     }
                 });
-                var uploader = new Uploader(KMLFileLocationBox.Text, config, progresss);
                 var dropTable = Convert.ToBoolean(dropExisting.IsChecked);
+                var kmlFile = KMLFileLocationBox.Text;
                 if (tabControl.SelectedIndex == 0)
                 {
-                    Task.Run(() => uploader.Upload(connectionString, dropTable));
+                    Task.Run(() => 
+                    {
+                        var uploader = new Uploader(kmlFile, config, progresss);
+                        uploader.Upload(connectionString, dropTable);
+                    });
                 }
                 else
                 {
                     var fileLoc = saveScriptTo.Text;
                     Task.Run(() =>
                     {
+                        var uploader = new Uploader(kmlFile, config, progresss);
                         var script = uploader.GetScript();
                         File.WriteAllText(fileLoc, script);
                     });

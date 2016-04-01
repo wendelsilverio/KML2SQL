@@ -130,7 +130,7 @@ namespace Kml2Sql.Mapping
             {
                 sb.Append(GetInnerRingSql(innerCoordinates, config));
             }
-            sb.Append(@"))', " + config.Srid + @");" + Environment.NewLine);
+            sb.Append(@"))', " + config.Srid + @").MakeValid();" + Environment.NewLine);
             if (declareVariables)
             {
                 sb.Append("DECLARE @validGeom geometry;" + Environment.NewLine);

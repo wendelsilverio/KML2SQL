@@ -6,7 +6,7 @@
     <Grid>
         <Label Content="KML File:" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" FontSize="13.333" FontWeight="Bold" RenderTransformOrigin="0.48,0.211"/>
         <TextBox x:Name="KMLFileLocationBox" HorizontalAlignment="Left" Height="23" Margin="82,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" Text="C:\..." GotFocus="KMLFileLocationBox_GotFocus"/>
-        <Button Content="..." HorizontalAlignment="Left" Margin="438,25,0,0" VerticalAlignment="Top" Width="35" Click="Button_Click"/>
+        <Button Content="..." HorizontalAlignment="Left" Margin="433,23,0,0" VerticalAlignment="Top" Width="35" Click="Button_Click" Height="22"/>
         <TextBox x:Name="databaseNameBox" HorizontalAlignment="Left" Height="23" Margin="120,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" GotFocus="databaseNameBox_GotFocus"/>
         <TextBox x:Name="tableBox" HorizontalAlignment="Left" Height="23" Margin="120,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" Text="myTable" GotFocus="tableBox_GotFocus" RenderTransformOrigin="-1.356,0.288"/>
         <TextBox x:Name="columnNameBox" HorizontalAlignment="Left" Height="23" Margin="120,276,0,0" TextWrapping="Wrap" Text="placemark" VerticalAlignment="Top" Width="141" GotFocus="columnNameBox_GotFocus"/>

@@ -54,6 +54,7 @@ namespace KML2SQL
 
         public void Upload(SqlConnection connection, bool dropExistingTable)
         {
+            SqlCommand sqlCommand;
             try
             {
                 if (connection.State == System.Data.ConnectionState.Closed)
@@ -71,9 +72,18 @@ namespace KML2SQL
                 for (var i = 0; i < mapFeatures.Length; i++)
                 {
                     ReportProgress(GetProgressMessage(mapFeatures[i]), GetPercentage(i + 1, mapFeatures.Length));
-                    var sqlCommand = mapFeatures[i].GetInsertCommand();
-                    sqlCommand.Connection = connection;
-                    sqlCommand.ExecuteNonQuery();
+                    //try
+                    //{
+                        sqlCommand = mapFeatures[i].GetInsertCommand();
+                        sqlCommand.Connection = connection;
+                        sqlCommand.ExecuteNonQuery();
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ReportProgress("Failed to upload placemark " + mapFeatures[i].Id + "Error was: " + Environment.NewLine + ex,
+                    //        GetPercentage(i + 1, mapFeatures.Length)
+                    //        );
+                    //}                    
                 }
                 ReportProgress("Done!", 100);
             }
