@@ -1,0 +1,28 @@
+.ui-image{
+    float: right;
+    margin-right: 30px;
+}
+
+.image-shadow{
+    border: 1px solid black;
+    box-shadow: 5px 5px 5px #888888;
+    margin-bottom: 30px;
+}
+
+li{
+    margin: 5px;
+}
+
+
+table{ 
+    border-collapse: collapse;
+}
+table td{
+    border: 1px solid black;
+}
+
+body{
+    margin-left: 50px;
+    margin-right: 50px;
+    max-width: 1000px;
+}

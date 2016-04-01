@@ -4,12 +4,65 @@
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
+  <title>KML2SQL Documentation</title>
   <meta name="description" content="Kml2Sql Documentation">
   <meta name="author" content="Zachary Shuford">
+  <link rel="stylesheet" href="site.css">
 </head>
 
 <body>
-  Hello World!
+  <h1>KML2SQL Desktop Client Documentation.</h1>
+  <p>Welcome to the Kml2Sql Docs Page! I like to think the program is pretty self-explanatory, but below you'll find a full explanation.</p>
+  <p>Fist, we need to make sure you're in the right place. <b>If you're a software developer, you probably want the <a href="developerDocs.html">API Documentation</a> instead!</b>
+    If you're a normal person using the desktop client, though, keep reading!</p>
+  <h2>What Does KML2SQL Do?</h2>
+  <div>KML2SQL takes KML files and puts them into SQL. For instance, let's say you have a KML file containing data on every county in North Carolina. 
+      The KML file is a series of <i>placemarks</i>. Each placemark contains the following:
+      <ol>
+            <li>A geographical object (in this case, a polygon denoting the borders of the county.</li>
+            <li>The county's name, population, and medium income.
+      </ol>
+      <p>Using KML2SQL to upload this file, you would get a table in SQL Server that looked like this:</p>
+      <table>
+        <thead><tr><td>Id</td><td>Name</td><td>Population</td><td>MediumIncome</td><td>Polygon</td></tr></thead>
+        <tbody>
+            <tr>
+                <td>1</td><td>Gaston</td><td>500,000</td><td>33,000</td><td>0xE610...</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Mecklenburg</td><td>1,000,000</td><td>33,000</td><td>0xE870...</td>
+            </tr>
+            <tr>                
+                <td>3</td><td>Cleveland</td><td>120,000</td><td>25,000</td><td>0xE120...</td>
+            </tr>
+            <tr><td colspan="5">Etc...</td></tr>
+        </tbody>
+      </table>
+      <p>KML2SQL can be either to do this directly, or by creating a SQL Script for you to run. Once you get that, you can do all kinds of things, like check if the polygons intersect.
+          You can even view the results in the "Spatial results" tab of SQL Management Studio.
+      </p>
+      <img class="image-shadow" style="max-width: 700px" src="images/sqlStudio.png">
+  </div>
+  
+  <h2>How To Use KML2SQL</h2>
+  <p>Let's walk though what each optoin in the UI does:</p>
+  <div class="image-shadow ui-image"><img src="images/ui.png"></div>
+  <div></div>
+  <ol>
+    <li><b>KML File</b>: The KML file you want to input to SQL.</li>
+    <li><b>File Picker:</b> The file picker for the KML file.</li>
+    <li><b>Upload/Script Panel:</b> Options for either uploading placemarks to SQL or generating script. See below for more info.</li>
+    <li><b>Database Name:</b> The name of the database the file will be uploaded to.</li>
+    <li><b>Table Name:</b> The name of the table that the KML file will be uploaded to.</li>
+    <li><b>Shape Column Name:</b> The name of the column that will store the shapes.</li>
+    <li><b>Polygon Type:</b> Geography type is intended for plotting points of the Earth (ie, on a sphere), but it can be more fiddly, and Gemoetry usually works just fine.
+    See <a href="https://msdn.microsoft.com/en-us/library/bb964711.aspx">this page</a> for more information.</li>
+    <li><b>SRID:</b> The SRID for any Geography polygons. If you don't know what this means, you can probably ignore it or use the defaults. 
+    You might want to check out <a href="https://msdn.microsoft.com/en-us/library/bb964707.aspx">this page</a> for mor information.</li>
+    <li><b>Fix Broken Polygons:</b> If your KML file contains invalid polygons, where the start point is not the same as the end point, this option will 'close' those invalid polygons.</li>
+    <li><b>Drop Existing Table:</b> Use if you want KML2SQL to drop the old table for you before uploading the new data.</li>
+    <li><b>View Logs:</b> Open the folder containing the logs</li>
+    <li><b>Start:</b> Press to start. :D
+  </ol>
 </body>
 </html>
