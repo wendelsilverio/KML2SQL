@@ -17,6 +17,7 @@ li{
 table{ 
     border-collapse: collapse;
 }
+
 table td{
     border: 1px solid black;
 }
@@ -25,4 +26,9 @@ body{
     margin-left: 50px;
     margin-right: 50px;
     max-width: 1000px;
+}
+
+.section{
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
