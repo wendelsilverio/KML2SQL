@@ -6,7 +6,6 @@
 .image-shadow{
     border: 1px solid black;
     box-shadow: 5px 5px 5px #888888;
-    margin-bottom: 30px;
 }
 
 li{
@@ -14,12 +13,13 @@ li{
 }
 
 
-table{ 
-    border-collapse: collapse;
+table { 
+    border-collapse: separate;
+    border-spacing: 10px;
 }
 
-table td{
-    border: 1px solid black;
+table > thead > tr > td{
+    font-weight: bold;
 }
 
 body{
@@ -29,6 +29,5 @@ body{
 }
 
 .section{
-    margin-top: 50px;
     margin-bottom: 50px;
 }

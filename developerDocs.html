@@ -1,1 +1,54 @@
-Coming Soon!
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>KML2SQL Desktiop Client Documentation</title>
+  <meta name="description" content="Kml2Sql Documentation">
+  <meta name="author" content="Zachary Shuford">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/default.min.css">
+  <link rel="stylesheet" href="site.css">
+</head>
+
+<body>
+  <h1>KML2SQL Nuget Documentation.</h1>
+  <div class="section">
+    <h2>Getting Started</h2>
+    <p>First, we need to install the NuGet package:</p>
+    <pre><code>Install-Package Kml2Sql</code></pre>
+    <p>The bare minium code to insert a KML file into SQL Server would then look like this:</p>
+    <pre><code class="csharp">var fileStream = File.Open("myFile.kml", FileMode.Open);
+var mapper = new Kml2SqlMapper(fileStream);
+using (var connection = new SqlConnection("myConnectionString"))
+{
+    connection.Open();
+    var createTableCommand = mapper.GetCreateTableCommand(connection);
+    createTableCommand.ExecuteNonQuery();
+    foreach (var mapFeature in mapper.GetMapFeatures())
+    {
+        var command = mapFeature.GetInsertCommand();
+        command.Connection = connection;
+        command.ExecuteNonQuery();
+    }
+}</code></pre>
+  <p>Now let's check SQL</p>
+  <pre><code class="sql">Select * 
+From UsZips 
+Where ZCTA5CE10 > '27006' --This is the zip code
+AND ZCTA5CE10 < '28909'   --range for North Carolina</code></pre>
+    <img class="image-shadow" style="max-width: 600px" src="images/sqlStudio.png">
+    <p>It's as easy as that. More documentation Coming Soon<sup>TM</sup>, but in the mean time, all of the customization/configuration can be done via the 
+        Configuration object like so:
+        <pre><code>var mapper = new Kml2SqlMapper(fileStream);
+mapper.Configuration.IdColumnName = "Id";
+mapper.Configuration.PlacemarkColumnName = "Shapes";
+mapper.Configuration.TableName = "UsZips";
+mapper.Configuration.MapColumnName("XmlNodeName", "ColumnName");
+//etc...</code></pre>
+        </p>
+  </div>  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
