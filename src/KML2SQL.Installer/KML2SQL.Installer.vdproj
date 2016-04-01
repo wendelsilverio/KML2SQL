@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_11527A87AA4C4B192DD6935656C91BD0"
+        "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3DFF95CA2DFD3D8E5CBE1D5135833171"
         "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
         "MsmSig" = "8:_UNDEFINED"
@@ -34,7 +40,7 @@
         "Entry"
         {
         "MsmKey" = "8:_A4433CC1092B83398B03E0B1E33EF8C5"
-        "OwnerKey" = "8:_E4C87432ACDB002EB2B089F63F06BD32"
+        "OwnerKey" = "8:_11527A87AA4C4B192DD6935656C91BD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -52,12 +58,6 @@
         "Entry"
         {
         "MsmKey" = "8:_E43CEDAB6F3393EC85AA7B441A8F0CD2"
-        "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E4C87432ACDB002EB2B089F63F06BD32"
         "OwnerKey" = "8:_DCD37C8E185E4BD2A5D6216FD6B360C6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -94,7 +94,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E4C87432ACDB002EB2B089F63F06BD32"
+        "OwnerKey" = "8:_11527A87AA4C4B192DD6935656C91BD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -204,6 +204,37 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_11527A87AA4C4B192DD6935656C91BD0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Kml2Sql.Mapping, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_11527A87AA4C4B192DD6935656C91BD0"
+                    {
+                    "Name" = "8:Kml2Sql.Mapping.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Kml2Sql.Mapping.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3DFF95CA2DFD3D8E5CBE1D5135833171"
             {
             "AssemblyRegister" = "3:1"
@@ -348,37 +379,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E4C87432ACDB002EB2B089F63F06BD32"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Kml2Sql.Mapping, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E4C87432ACDB002EB2B089F63F06BD32"
-                    {
-                    "Name" = "8:Kml2Sql.Mapping.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Kml2Sql.Mapping.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_9AE3C120B704415CA374F24EC4F4C2AD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F780106F49ABDB39C1068A501EB7E1F6"
             {
             "AssemblyRegister" = "3:1"
@@ -466,15 +466,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:KML2SQL"
-        "ProductCode" = "8:{2FCC652D-6358-4702-BF4A-498C9C7F1A69}"
-        "PackageCode" = "8:{694BC57C-23A7-4E1D-A100-4D1D6EAE5045}"
+        "ProductCode" = "8:{8A98F7AF-4DA1-4E24-999B-6694A754E419}"
+        "PackageCode" = "8:{C0636B97-FE1B-4812-ABC9-F3628E8A5CE4}"
         "UpgradeCode" = "8:{7C61ECAB-33CB-4530-9F76-FF895F3BC054}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.0.0"
+        "ProductVersion" = "8:2.0.1"
         "Manufacturer" = "8:Pharylon"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
