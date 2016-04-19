@@ -73,6 +73,9 @@
     <None Include="TestData\KML_Samples.kml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\Scenic_Landmarks.kml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\school.kml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

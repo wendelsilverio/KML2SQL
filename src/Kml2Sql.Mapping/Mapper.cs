@@ -130,8 +130,6 @@ namespace Kml2Sql.Mapping
         private IEnumerable<string> GetColumnNames()
         {
             return _mapFeatures.SelectMany(x => x.Data.Keys).Distinct();
-        }
-
-        
+        }        
     }
 }

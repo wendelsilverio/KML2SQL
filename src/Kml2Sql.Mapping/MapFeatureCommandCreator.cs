@@ -26,14 +26,24 @@ namespace Kml2Sql.Mapping
             bool useParameters = true, bool declareVariables = true)
         {
             var columnNames = mapFeature.Data.Keys.Select(x => config.GetColumnName(x)).ToArray();
-            var columns = string.Join(", ", columnNames);
+            string columnText = GetColumnText(columnNames);
             string parameters = GetParameters(mapFeature, useParameters, columnNames);
             StringBuilder query = new StringBuilder();
             query.Append(ParseCoordinates(mapFeature, config, declareVariables));
-            query.Append(string.Format($"INSERT INTO {config.TableName}(Id,{columns}, {config.PlacemarkColumnName})"));
+            query.Append(string.Format($"INSERT INTO {config.TableName}(Id,{columnText} {config.PlacemarkColumnName})"));
             query.Append(Environment.NewLine);
-            query.Append($"VALUES({parameters}, @placemark);");
+            query.Append($"VALUES({parameters} @placemark);");
             return query.ToString();
+        }
+
+        private static string GetColumnText(string[] columnNames)
+        {
+            string columnText = "";
+            if (columnNames.Length > 0)
+            {
+                columnText = string.Join(", ", columnNames) + ",";
+            }
+            return columnText;
         }
 
         private static string GetParameters(MapFeature mapFeature, bool useParameters, string[] columnNames)
@@ -43,11 +53,19 @@ namespace Kml2Sql.Mapping
             {
                 var joined = string.Join(", ", columnNames.Select(x => "@" + x));
                 parameters = $"@Id, {joined}";
+                if (columnNames.Length > 0)
+                {
+                    parameters += ", ";
+                }
             }
             else
             {
                 var joinedData = string.Join(", ", mapFeature.Data.Values);
                 parameters = $"{mapFeature.Id}, {joinedData}";
+                if (mapFeature.Data.Values.Count > 0)
+                {
+                    parameters += ", ";
+                }
             }
             return parameters;
         }

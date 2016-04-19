@@ -25,7 +25,7 @@ namespace KML2SQL
             using (var stream = File.OpenRead(filePath))
             {
                 Mapper = new Kml2SqlMapper(stream, configuration);
-            }                
+            }
         }
 
         public Uploader(FileStream stream) : this(stream, null) { }
@@ -64,7 +64,14 @@ namespace KML2SQL
                 if (dropExistingTable)
                 {
                     ReportProgress("Dropping Table", 0);
-                    DropTable(connection);
+                    try
+                    {
+                        DropTable(connection);
+                    }
+                    catch
+                    {
+
+                    }                    
                 }
                 ReportProgress("Creating Table", 0);
                 CreateTable(connection);

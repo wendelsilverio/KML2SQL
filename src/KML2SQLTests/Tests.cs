@@ -40,7 +40,8 @@ namespace KML2SQLTests
                 var config = new Kml2SqlConfig()
                 {
                     GeoType = geoType,
-                    TableName = tableName
+                    TableName = tableName,
+                    FixPolygons = true
                 };                
                 var uploader = new Uploader(fileName, config);
                 uploader.Upload(connection, true);
@@ -103,6 +104,12 @@ namespace KML2SQLTests
         public void GoogleSample()
         {
             Upload(@"TestData\KML_Samples.kml", tableName + "Google", PolygonType.Geometry);
+        }
+
+        [TestMethod]
+        public void SenicLandmarks()
+        {
+            Upload(@"TestData\Scenic_Landmarks.kml", tableName + "ScenicLandmarks", PolygonType.Geometry);
         }
 
         //[TestMethod]
