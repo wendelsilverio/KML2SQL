@@ -15,6 +15,7 @@ namespace Kml2Sql.Mapping
             var query = CreateCommandQuery(mapFeature, config);
             SqlCommand sqlCommand = new SqlCommand(query);
             sqlCommand.Parameters.AddWithValue("@Id", mapFeature.Id);
+            sqlCommand.Parameters.AddWithValue("@Name", GetNameParam(mapFeature));
             foreach (KeyValuePair<string, string> simpleData in mapFeature.Data)
             {
                 sqlCommand.Parameters.AddWithValue("@" + config.GetColumnName(simpleData.Key), simpleData.Value);
@@ -22,15 +23,27 @@ namespace Kml2Sql.Mapping
             return sqlCommand;
         }
 
-        internal static string CreateCommandQuery(MapFeature mapFeature, Kml2SqlConfig config, 
-            bool useParameters = true, bool declareVariables = true)
+        private static object GetNameParam(MapFeature mapFeature)
+        {
+            if (!String.IsNullOrWhiteSpace(mapFeature.Name))
+            {
+                return mapFeature.Name;
+            }
+            return DBNull.Value;
+        }
+
+        internal static string CreateCommandQuery(
+            MapFeature mapFeature, 
+            Kml2SqlConfig config, 
+            bool useParameters = true, 
+            bool declareVariables = true)
         {
             var columnNames = mapFeature.Data.Keys.Select(x => config.GetColumnName(x)).ToArray();
             string columnText = GetColumnText(columnNames);
             string parameters = GetParameters(mapFeature, useParameters, columnNames);
             StringBuilder query = new StringBuilder();
             query.Append(ParseCoordinates(mapFeature, config, declareVariables));
-            query.Append(string.Format($"INSERT INTO {config.TableName}(Id,{columnText} {config.PlacemarkColumnName})"));
+            query.Append(string.Format($"INSERT INTO {config.TableName}({config.IdColumnName}, {config.NameColumnName}, {columnText} {config.PlacemarkColumnName})"));
             query.Append(Environment.NewLine);
             query.Append($"VALUES({parameters} @placemark);");
             return query.ToString();
@@ -52,7 +65,7 @@ namespace Kml2Sql.Mapping
             if (useParameters)
             {
                 var joined = string.Join(", ", columnNames.Select(x => "@" + x));
-                parameters = $"@Id, {joined}";
+                parameters = $"@Id, @Name, {joined}";
                 if (columnNames.Length > 0)
                 {
                     parameters += ", ";

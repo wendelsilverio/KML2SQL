@@ -30,7 +30,7 @@ namespace Kml2Sql.Mapping
         /// <summary>
         /// Placemar Name property, or else Id
         /// </summary>
-        public string Name {get { return Placemark.Name ?? Id.ToString(); }}
+        public string Name => Placemark?.Name;
 
         /// <summary>
         /// Coordinates of polygon, point, or string.
@@ -116,7 +116,11 @@ namespace Kml2Sql.Mapping
             {
                 if (sd.Name.ToLower() == "id")
                 {
-                    sd.Name = "sd_id";
+                    sd.Name = "placemark_sd_id";
+                }
+                if (sd.Name.ToLower() == "name")
+                {
+                    sd.Name = "placemark_sd_name";
                 }
                 Data.Add(sd.Name.Sanitize(), sd.Text.Sanitize());
             }
@@ -124,7 +128,11 @@ namespace Kml2Sql.Mapping
             {
                 if (data.Name.ToLower() == "id")
                 {
-                    data.Name = "data_id";
+                    data.Name = "placemark_data_id";
+                }
+                if (data.Name.ToLower() == "name")
+                {
+                    data.Name = "placemark_data_name";
                 }
                 Data.Add(data.Name.Sanitize(), data.Value.Sanitize());
             }

@@ -114,6 +114,7 @@ namespace Kml2Sql.Mapping
             StringBuilder sb = new StringBuilder();
             sb.Append(String.Format("CREATE TABLE [{0}] (", Configuration.TableName));
             sb.Append($"[{Configuration.IdColumnName}] INT NOT NULL PRIMARY KEY,");
+            sb.Append($"[{Configuration.NameColumnName}] VARCHAR(255),");
             foreach (var columnName in GetColumnNames().Select(Configuration.GetColumnName))
             {
                 sb.Append(String.Format("[{0}] VARCHAR(max), ", columnName));

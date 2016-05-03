@@ -30,17 +30,14 @@ namespace KML2SQL.Updates
                 var response = await client.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var obj = JObject.Parse(json);
-                    var latestVersionString = (string)obj["tag_name"];
-                    var latestVersion = SemVersion.Parse(latestVersionString);
+                    var latestVersion = await GetLatestVersion(response);
                     var thisVersion = SemVersion.Parse(GetCurrentVersion());
                     if (latestVersion > thisVersion && ShouldNag(settings, latestVersion))
                     {
                         settings.UpdateInfo.LastTimeNagged = DateTime.Now;
                         var mbResult = MessageBox.Show(
-                            "A new version is availbe. Press 'Yes' to go to the download page, Cancel to skip, or 'No' to not be reminded unless an even newer version comes out.", 
-                            "New Version Available!", 
+                            "A new version is availbe. Press 'Yes' to go to the download page, Cancel to skip, or 'No' to not be reminded unless an even newer version comes out.",
+                            "New Version Available!",
                             MessageBoxButton.YesNoCancel);
                         if (mbResult == MessageBoxResult.Yes)
                         {
@@ -54,6 +51,15 @@ namespace KML2SQL.Updates
                 }
                 SettingsPersister.Persist(settings);
             }
+        }
+
+        private static async Task<SemVersion> GetLatestVersion(HttpResponseMessage response)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JObject.Parse(json);
+            var latestVersionString = (string)obj["tag_name"];
+            var latestVersion = SemVersion.Parse(latestVersionString);
+            return latestVersion;
         }
 
         private static bool ShouldNag(Settings settings, SemVersion latestVersion)

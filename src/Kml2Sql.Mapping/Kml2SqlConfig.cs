@@ -19,9 +19,13 @@ namespace Kml2Sql.Mapping
         /// </summary>
         public string PlacemarkColumnName { get; set; } = "Placemark";
         /// <summary>
-        /// Column ID name name. Default is "Id".
+        /// Column ID name. Default is "Id".
         /// </summary>
         public string IdColumnName { get; set; } = "Id";
+        /// <summary>
+        /// Name of column with placemark name. Default is "Name".
+        /// </summary>
+        public string NameColumnName { get; set; } = "Name";
         /// <summary>
         /// Sql Polygon type that will be used. Default is "Geometry".
         /// </summary>
