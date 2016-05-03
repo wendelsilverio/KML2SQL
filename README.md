@@ -15,6 +15,9 @@ KML2SQL is a utility that uploads a KML file to a Microsoft SQL database, storin
 
 What's New:
 -----
+**05/03/2016 - v 2.1**
+* Added the "Name" property of placemarks as a column.
+
 **03/31/2016 - v 2.0**
 * Better ability to fix broken polygons.
 * Improved UI layout.
