@@ -25,9 +25,16 @@ namespace KML2SQL
             {
                 if (File.Exists(FileName))
                 {
-                    var settingsText = File.ReadAllText(FileName);
-                    var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<Settings>(settingsText);
-                    return settings;
+                    try
+                    {
+                        var settingsText = File.ReadAllText(FileName);
+                        var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<Settings>(settingsText);
+                        return settings;
+                    }
+                    catch
+                    {
+                        File.Delete(FileName);
+                    }                    
                 }
                 return null;
             }
