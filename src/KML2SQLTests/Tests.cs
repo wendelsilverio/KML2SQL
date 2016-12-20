@@ -137,6 +137,12 @@ namespace KML2SQLTests
             Upload(@"TestData\Scenic_Landmarks.kml", "ScenicLandmarks", PolygonType.Geometry);
         }
 
+        [TestMethod]
+        public void MultiPolygons()
+        {
+            Upload(@"TestData\Police_Precincts.kml", "MultiPolygons", PolygonType.Geometry);
+        }
+
         //[TestMethod]
         //public void UsZips()
         //{

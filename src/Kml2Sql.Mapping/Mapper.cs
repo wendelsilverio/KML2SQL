@@ -40,7 +40,6 @@ namespace Kml2Sql.Mapping
             int id = 1;
             foreach (var placemark in kml.Flatten().OfType<Placemark>())
             {
-
                 if (HasValidElement(placemark))
                 {
                     MapFeature mapFeature = new MapFeature(placemark, id, Configuration);
