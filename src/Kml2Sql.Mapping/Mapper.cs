@@ -119,7 +119,7 @@ namespace Kml2Sql.Mapping
             {
                 sb.Append(String.Format("[{0}] VARCHAR(max), ", columnName));
             }
-            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL, );", Configuration.PlacemarkColumnName, Configuration.GeoType));
+            sb.Append(String.Format("[{0}] [sys].[{1}] NOT NULL);", Configuration.PlacemarkColumnName, Configuration.GeoType));
             return sb.ToString();
         }
 
