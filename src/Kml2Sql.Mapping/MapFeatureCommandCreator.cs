@@ -73,8 +73,8 @@ namespace Kml2Sql.Mapping
             }
             else
             {
-                var joinedData = string.Join(", ", mapFeature.Data.Values);
-                parameters = $"{mapFeature.Id}, {joinedData}";
+                var joinedData = string.Join(", ", mapFeature.Data.Values.Select(x=> "'" + x.Replace("'","") + "'"));
+                parameters = $"{mapFeature.Id}, '{mapFeature.Name.Replace("'","''")}', {joinedData}";
                 if (mapFeature.Data.Values.Count > 0)
                 {
                     parameters += ", ";
@@ -172,7 +172,7 @@ namespace Kml2Sql.Mapping
 
         private static string GetOuterRingSql(Vector[] coordinates, Kml2SqlConfig config)
         {
-            var outerCoordSql = coordinates.Select(GetVectorSql).ToList();
+            List<string> outerCoordSql = coordinates.Select(GetVectorSql).ToList();
             if (config.FixPolygons && RingInvalid(coordinates))
             {
                 outerCoordSql.Add(GetVectorSql(coordinates[0]));
@@ -185,7 +185,11 @@ namespace Kml2Sql.Mapping
         {
             var sb = new StringBuilder();
             sb.Append("), (");
-            var coordSql = innerCoordinates.Select(GetVectorSql);
+            var coordSql = innerCoordinates.Select(GetVectorSql).ToList();
+            if (config.FixPolygons && RingInvalid(innerCoordinates))
+            {
+                coordSql.Add(GetVectorSql(innerCoordinates[0]));
+            }
             sb.Append(string.Join(", ", coordSql));
             return sb.ToString();
         }

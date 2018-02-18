@@ -85,13 +85,13 @@ namespace KML2SQL
             sridBox.IsEnabled = false;
         }
 
-        private void CreateDatabaseButton_Click(object sender, RoutedEventArgs routedArgs)
+        private async void CreateDatabaseButton_Click(object sender, RoutedEventArgs routedArgs)
         {
             SaveSettings();
             UploadFile();
         }
 
-        private void UploadFile()
+        private async void UploadFile()
         {
             var logger = new Logger();
             try
@@ -119,7 +119,7 @@ namespace KML2SQL
                 var kmlFile = KMLFileLocationBox.Text;
                 if (tabControl.SelectedIndex == 0)
                 {
-                    Task.Run(() => 
+                    await Task.Run(() => 
                     {
                         var uploader = new Uploader(kmlFile, config, progresss);
                         uploader.Upload(connectionString, dropTable);
@@ -128,7 +128,7 @@ namespace KML2SQL
                 else
                 {
                     var fileLoc = saveScriptTo.Text;
-                    Task.Run(() =>
+                    await Task.Run(() =>
                     {
                         var uploader = new Uploader(kmlFile, config, progresss);
                         var script = uploader.GetScript();
