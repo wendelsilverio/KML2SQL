@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -137,13 +138,33 @@ namespace Kml2Sql.Mapping
             if (declareVariables)
             {
                 sb.Append("DECLARE @validGeom geometry;" + Environment.NewLine);
-            }            
-            sb.Append("SET @validGeom = geometry::STLineFromText('LINESTRING (");
-            foreach (Vector coordinate in mapFeature.Coordinates)
-            {
-                sb.Append(coordinate.Longitude + " " + coordinate.Latitude + ", ");
             }
-            sb.Remove(sb.Length - 2, 2).ToString();
+            
+            if(mapFeature.MultiCoordinates.Length == 0)
+            {
+               sb.Append("SET @validGeom = geometry::STLineFromText('LINESTRING (");
+                foreach (Vector coordinate in mapFeature.Coordinates)
+                {
+                    sb.Append(coordinate.Longitude + " " + coordinate.Latitude + ", ");
+                }
+                sb.Remove(sb.Length - 2, 2).ToString();
+            }
+            else
+            {
+                sb.Append("SET @validGeom = geometry::STMLineFromText('MULTILINESTRING (");
+                for(int i=0; i < mapFeature.MultiCoordinates.Length; i++)
+                {
+                    sb.Append("(");
+                    foreach (Vector coordinate in mapFeature.MultiCoordinates[i])
+                    {
+                        sb.Append(coordinate.Longitude.ToString("G20").Replace(',','.') + " " + coordinate.Latitude.ToString("G20").Replace(',', '.') + ",");
+                    }
+                    sb.Remove(sb.Length - 1, 1);
+                    sb.Append("),");
+                }
+                sb.Remove(sb.Length - 1, 1).ToString();
+            }
+
             sb.Append(@")', " + config.Srid + @");");
             return sb.ToString();
         }

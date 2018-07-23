@@ -43,6 +43,11 @@ namespace Kml2Sql.Mapping
         public Vector[][] InnerCoordinates { get; private set; }
 
         /// <summary>
+        /// Multi coordinates, if any. Only used for LineStrings.
+        /// </summary>
+        public Vector[][] MultiCoordinates { get; private set; }
+
+        /// <summary>
         /// Additinal Placemark data that will be entered into SQL.
         /// </summary>
         public Dictionary<string, string> Data { get; private set; } = new Dictionary<string, string>();
@@ -90,7 +95,15 @@ namespace Kml2Sql.Mapping
             switch (this.ShapeType)
             {
                 case ShapeType.LineString:
-                    Coordinates = InitializeLineCoordinates(placemark);
+                    Vector[][] linestrings = InitializeLineCoordinates(placemark);
+                    if(linestrings.Length == 1)
+                    {
+                        Coordinates = linestrings[0];
+                    }
+                    else
+                    {
+                        MultiCoordinates = linestrings;
+                    }
                     break;
                 case ShapeType.Point:
                     Coordinates = InitializePointCoordinates(placemark);
@@ -151,15 +164,18 @@ namespace Kml2Sql.Mapping
             return coordinates.ToArray();
         }
 
-        private static Vector[] InitializeLineCoordinates(Placemark placemark)
+        private static Vector[][] InitializeLineCoordinates(Placemark placemark)
         {
-            List<Vector> coordinates = new List<Vector>();
-            foreach (LineString element in placemark.Flatten().OfType<LineString>())
+            List<List<Vector>> coordinates = new List<List<Vector>>();
+
+            int lineStringIndex = 0;
+            foreach (LineString lineString in placemark.Flatten().OfType<LineString>())
             {
-                LineString lineString = element;
-                coordinates.AddRange(lineString.Coordinates);
+                coordinates.Add(new List<Vector>());
+                coordinates[lineStringIndex].AddRange(lineString.Coordinates);
+                lineStringIndex++;
             }
-            return coordinates.ToArray();
+            return coordinates.Select(c => c.ToArray()).ToArray();
         }
 
         private static Vector[][] InitializePolygonCoordinates(Placemark placemark)
