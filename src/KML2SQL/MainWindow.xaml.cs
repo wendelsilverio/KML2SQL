@@ -18,6 +18,8 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using Kml2Sql.Mapping;
 using KML2SQL.Updates;
+using System.Threading;
+using System.Globalization;
 
 namespace KML2SQL
 {
@@ -31,7 +33,9 @@ namespace KML2SQL
 
         public MainWindow()
         {
+
             InitializeComponent();
+            Title = Title + " forked by wendelsilverio";
             if (!Directory.Exists(Utility.GetApplicationFolder()))
                 Directory.CreateDirectory(Utility.GetApplicationFolder());
             saveScriptTo.Text = Utility.GetDefaultScriptSaveLoc();
